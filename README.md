@@ -1,4 +1,4 @@
-# Trabajo de Fin de Grado: *Título*
+# Trabajo de Fin de Grado: Generación de dietas optimizadas con fines concretos
 
 ### Autor(a): José Miguel Pelegrina Pelegrina
 ### Tutor(a)(es): Juan Julián Merelo Guervós
