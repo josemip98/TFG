@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Modificar producto</h2>
+<form class="form_pkm" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="nombre_modificar" value="{{ nombre }}">
+    <input type="hidden" name="modificado" value="modificado">
+    <input type="submit" value="Guardar">
+</form>
+{% endblock %}
