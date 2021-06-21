@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Marca</th>
+        <th>Calorias</th>
+        <th>Hidratos</th>
+        <th>Grasa</th>
+        <th>Proteinas</th>
+        {% if user.is_staff %}
+        <th>Modificar</th>
+        <th>Eliminar</th>
+        {% endif %}
+    </tr>
+    <tr>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.marca }}</td>
+        <td>{{ producto.calorias }}</td>
+        <td>{{ producto.hidratos }}</td>
+        <td>{{ producto.grasa }}</td>
+        <td>{{ producto.proteinas }}</td>
+        {% if user.is_staff %}
+        <td><form action="{% url 'modificar_producto' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="titulo_modificar" value="{{ producto.id }}">
+            <input type="submit" class="btn-table" value="Modificar"></form>
+        </td>
+        <td><form action="{% url 'borrar_producto' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="titulo_borrar" value="{{ producto.nombre }}">
+            <input type="submit" class="btn-table" value="Eliminar"></form>
+        </td>
+        {% endif %}
+    </tr>
+</table>
+{% endblock %}

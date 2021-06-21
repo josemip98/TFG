@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+
+{% block content %}
+<table>
+    <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+    </tr>
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td><form action="{% url 'modificar_perfil' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="email_modificar" value="{{ user.email }}">
+            <input type="submit" class="btn-table" value="Modificar"></form>
+        </td>
+        <td><form action="{% url 'borrar_perfil' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="email_borrar" value="{{ user.email }}">
+            <input type="submit" class="btn-table" value="Eliminar"></form>
+        </td>
+    </tr>
+</table>
+{% endblock %}

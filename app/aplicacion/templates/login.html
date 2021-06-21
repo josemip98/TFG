@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card card-info">
+  <div class="card-header">
+    <h3 class="card-title">Iniciar sesión</h3>
+  </div>
+  <form role="form" method="POST">
+      <div class="card-body">
+        {% csrf_token %}
+        {{ form|crispy }}
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-info" value="Iniciar sesión">Iniciar sesión</button>
+      </div>
+  </form>
+</div>
+{% endblock %}
