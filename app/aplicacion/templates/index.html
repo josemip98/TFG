@@ -68,31 +68,46 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <ul class="nav nav-treeview">
-        <a class="brand-link">Usuario</a>
-      </ul>
-      {% if login %}
-      <!-- Sidebar user (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="{% static 'lib/adminlte/img/user1-128x128.jpg' %}" class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-          <a href="#" class="d-block">{{ user.first_name }}</a>
-        </div>
-      </div>
-        <div class="nav nav-treeview">
-          <a href="{% url 'logout' %}" class="nav-link">Cerrar sesión</a>
-        </div>
-      
+      <!-- Sidebar user -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-      {% else %}
-      <!-- Sidebar user (optional) -->
-      <ul class="nav nav-treeview">
-        <a href="{% url 'login' %}" class="nav-link">Inicio sesión</a>
-        <a href="{% url 'registro' %}" class="nav-link">Registro</a>
-      </ul>
-      {% endif %}
+            <li class="nav-item">
+              <a class="brand-link">Usuario</a>
+            </li>
+            {% if login %}
+            <!-- Sidebar user (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+              <div class="image">
+                <img src="{% static 'lib/adminlte/img/user1-128x128.jpg' %}" class="img-circle elevation-2" alt="User Image">
+              </div>
+              <div class="info">
+                <a href="{% url 'mostrar_perfil' %}" class="d-block">{{ user.first_name }}</a>
+              </div>
+            </div>
+            <li class="nav-item">
+              <a href="{% url 'logout'%}" class="nav-link">
+                <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>Cerrar sesión</p>
+              </a>
+            </li>
+
+          {% else %}
+          <li class="nav-item">
+            <a href="{% url 'login'%}" class="nav-link">
+              <i class="nav-icon fas fa-sign-in-alt"></i>
+              <p>Iniciar sesión</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'registro'%}" class="nav-link">
+              <i class="nav-icon fas fa-user-plus"></i>
+              <p>Registrarse</p>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
@@ -103,19 +118,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a class="brand-link">Menú</a>
             </li>
             <li class="nav-item">
-            <a href="{% url 'index'%}" class="nav-link">
+              <a href="{% url 'index'%}" class="nav-link">
+              <i class="nav-icon fas fa-home"></i>
               <p>Inicio</p>
-            </a>
-          </li>
+              </a>
+            </li>
           <li class="nav-item">
             <a href="{% url 'lista_productos'%}" class="nav-link">
+              <i class="nav-icon fas fa-list"></i>
               <p>Listado de productos</p>
             </a>
           </li>
           {% if login %}
           <li class="nav-item">
             <a href="{% url 'aniadir_producto'%}" class="nav-link">
+              <i class="nav-icon fas fa-plus-circle"></i>
               <p>Añadir producto</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'modificar_producto'%}" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>Modificar producto</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'borrar_producto'%}" class="nav-link">
+              <i class="nav-icon fas fa-minus-circle"></i>
+              <p>Eliminar producto</p>
             </a>
           </li>
           {% endif %}

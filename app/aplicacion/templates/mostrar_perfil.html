@@ -1,26 +1,64 @@
 {% extends "index.html" %}
 
 {% block content %}
-<table>
-    <tr>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Modificar</th>
-        <th>Eliminar</th>
-    </tr>
-    <tr>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td><form action="{% url 'modificar_perfil' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="email_modificar" value="{{ user.email }}">
-            <input type="submit" class="btn-table" value="Modificar"></form>
-        </td>
-        <td><form action="{% url 'borrar_perfil' %}" method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="email_borrar" value="{{ user.email }}">
-            <input type="submit" class="btn-table" value="Eliminar"></form>
-        </td>
-    </tr>
-</table>
+<div class="card card-info">
+    <div class="card-header">
+      <h3 class="card-title">Perfil</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <form>
+              <div class="form-group row">
+                <label for="username" class="text-center col-sm-2 col-form-label">Usuario</label> 
+                <div class="col-8">
+                  <input id="username" name="username" placeholder="Username" class="form-control here" required="required" type="text" value="{{ user.username }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="name" class="text-center col-sm-2 col-form-label">Nombre</label> 
+                <div class="col-8">
+                  <input id="name" name="name" placeholder="First Name" class="form-control here" type="text" value="{{ user.first_name }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="lastname" class="text-center col-sm-2 col-form-label">Apellidos</label> 
+                <div class="col-8">
+                  <input id="lastname" name="lastname" placeholder="Last Name" class="form-control here" type="text" value="{{ user.last_name }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="email" class="text-center col-sm-2 col-form-label">Email</label> 
+                <div class="col-8">
+                  <input id="email" name="email" placeholder="Email" class="form-control here" required="required" type="text" value="{{ user.email }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="select" class="text-center col-sm-2 col-form-label">Rol</label> 
+                <div class="col-8">
+                  <select id="select" name="select" class="custom-select" >
+                    <option value="admin">Administrador</option>
+                    <option value="admin">Usuario</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn-responsive btninter">
+            <form action="{% url 'modificar_perfil' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="email_modificar" value="{{ user.email }}">
+                <input type="submit" class="btn btn-danger" value="Modificar">
+            </form>
+    {% if user.is_staff %}
+            <form action="{% url 'borrar_perfil' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="email_borrar" value="{{ user.email }}">
+                <input type="submit" class="btn btn-danger" value="Eliminar">
+            </form>
+    {% endif %}
+  </div>
+</div>
+</div>
 {% endblock %}
