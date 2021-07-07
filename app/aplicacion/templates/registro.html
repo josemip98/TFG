@@ -7,7 +7,7 @@
     <div class="card-header">
       <h3 class="card-title">Registro</h3>
     </div>
-    <form role="form" method="POST">
+    <form role="form" enctype="multipart/form-data" method="POST" id="upload-image-form">
         <div class="card-body">
         {% csrf_token %}
         {{ form|crispy }}

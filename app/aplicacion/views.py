@@ -1,4 +1,6 @@
 from django.shortcuts import render, HttpResponse
+from django.urls import reverse
+from django.conf import settings
 from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
@@ -7,10 +9,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from .models import Producto, Usuario
+from django.http import HttpResponseRedirect
 from .forms import ProductoForm, RegistroForm, LoginForm, UsuarioForm, BusquedaForm
 import json
 import csv
 import pandas as pd
+
 
 # Create your views here.
 
@@ -51,7 +55,7 @@ def productos_detalle(request, pk):
         context={'producto':producto_id, 'login': user_activo}
     )
 
-@login_required
+@login_required()
 def aniadir_producto(request):
     user_activo = request.user.username
     if request.method == 'POST':
@@ -87,17 +91,14 @@ def login(request):
 
 def registro(request):
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = UsuarioForm(request.POST,request.FILES)
 
         if form.is_valid():
-            usuario = form.save(commit=False)
-            usuario.set_password(form.cleaned_data['password'])
-            usuario.save()
+            form.save()
             productos = Producto.objects.all()
             return render(request, 'index.html', {'productos': productos})
-
     else:
-        form = RegistroForm()
+        form = UsuarioForm()
 
     return render(request, 'registro.html', {'form': form})
 
@@ -105,7 +106,7 @@ def registro(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return render(request, 'index.html')
+    return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
 
 def buscar_producto(request):
     user_activo = request.user.username
