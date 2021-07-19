@@ -1,32 +1,32 @@
+from django.forms.widgets import DateInput
 from django.shortcuts import render, HttpResponse
-from django.urls import reverse
 from django.conf import settings
-from django.forms.models import model_to_dict
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as do_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from .models import Producto, Usuario
+from .models import Dieta, Producto, Usuario
 from django.http import HttpResponseRedirect
-from .forms import ProductoForm, RegistroForm, LoginForm, UsuarioForm, BusquedaForm
+from .forms import ProductoForm, RegistroForm, LoginForm, UsuarioForm, BusquedaForm, DietaForm
 import json
 import csv
 import pandas as pd
+from datetime import datetime
 
 
 # Create your views here.
 
 def index(request):
     if request.user.is_authenticated:
-        user_activo = request.user.username
+        user_activo = request.user.usuario
         return render(request, 'index.html', {'login': user_activo})
     else:
         return render(request, 'index.html')
 
 def lista_productos(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     # df = pd.read_csv("data/nutrition.csv")
   
     # parsing the DataFrame in json format.
@@ -43,11 +43,11 @@ def lista_productos(request):
         return render(request, 'lista_productos.html', context)
 
 def productos_detalle(request, pk):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     try:
         producto_id=Producto.objects.get(pk=pk)
     except Producto.DoesNotExist:
-        raise Http404("Producto no existe")
+        raise ("Producto no existe")
 
     return render(
         request,
@@ -55,9 +55,9 @@ def productos_detalle(request, pk):
         context={'producto':producto_id, 'login': user_activo}
     )
 
-@login_required()
+@login_required
 def aniadir_producto(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     if request.method == 'POST':
         form = ProductoForm(request.POST)
 
@@ -77,15 +77,13 @@ def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
+            usuario = form.cleaned_data['username']
             password = form.cleaned_data['password']
-
-            user = authenticate(username=username, password=password)
+            user = authenticate(usuario=request.POST['username'],password=request.POST['password'])
 
             if user is not None:
                 do_login(request, user)
-                return render(request, "index.html", {'login': username})
-
+                return render(request, "index.html", {'login': usuario})
     return render(request, "login.html", {'form': form})
 
 
@@ -109,7 +107,7 @@ def logout_view(request):
     return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
 
 def buscar_producto(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     if request.method == 'POST' and 'buscar' in request.POST:
         producto = Producto.objects.get('nombre')
         return render(request, 'productos_detalle.html', {'producto': producto, 'login': user_activo})
@@ -119,7 +117,7 @@ def buscar_producto(request):
 
 @login_required
 def modificar_producto(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     if request.method == 'POST' and 'modificado' in request.POST:
         id = request.POST.get('id')
         nombre = request.POST.get('nombre')
@@ -135,49 +133,67 @@ def modificar_producto(request):
 
     else:
         producto = Producto.objects.filter(nombre=request.POST.get('nombre_modificar'))
-        data = {producto.id, producto.nombre, producto.marca, producto.calorias, producto.hidratos, producto.grasa, producto.proteinas}
+        data = {producto.nombre, producto.marca, producto.calorias, producto.hidratos, producto.grasa, producto.proteinas}
         form = ProductoForm(data)
         return render(request, 'modificar_producto.html', {'form': form, 'login': user_activo})
 
 
 @login_required
 def borrar_producto(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     Producto.objects.filter(nombre=request.POST.get('titulo_borrar')).delete()
     productos = Producto.objects.all()
     return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
 
 @login_required
 def mostrar_perfil(request):
-    user_activo = request.user.username
-    email = request.user.email
-    return render(request,'mostrar_perfil.html', context={'usuario':request.user, 'login': user_activo})
+    user_activo = request.user.usuario
+    usuario = Usuario.objects.filter(email=request.POST.get('email'))
+    return render(request,'mostrar_perfil.html', context={'usuario':usuario, 'login': user_activo})
 
 @login_required
 def modificar_perfil(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     if request.method == 'POST' and 'modificado' in request.POST:
-        id = request.POST.get('id')
         nombre = request.POST.get('nombre')
-        marca = request.POST.get('marca')
-        calorias = request.POST.get('calorias')
-        hidratos = request.POST.get('hidratos')
-        grasa = request.POST.get('grasa')
-        proteinas = request.POST.get('proteinas')
-        Producto.objects.filter(id=id).update(
-            nombre='nombre', marca='marca', calorias='calorias', hidratos='hidratos', grasa='grasa', proteinas='proteinas')
-        productos = Producto.objects.all()
-        return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
+        apellidos = request.POST.get('apellidos')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        genero = request.POST.get('genero')
+        altura = request.POST.get('altura')
+        peso = request.POST.get('peso')
+        Usuario.objects.filter(email=request.user.email).update(nombre=nombre, apellidos=apellidos, fecha_nacimiento=fecha_nacimiento, genero=genero, altura=altura, peso=peso)
+        usuario = Usuario.objects.filter(email=request.user.email)
+        return render(request, 'mostrar_perfil.html', {'usuario': usuario, 'login': user_activo})
 
     else:
         usuario = Usuario.objects.filter(email=request.POST.get('email_modificar'))
-        data = {usuario.nombre, usuario.apellidos, usuario.email}
-        form = UsuarioForm(data)
+        form = UsuarioForm()
         return render(request, 'modificar_perfil.html', {'form': form, 'login': user_activo})
-
 
 @login_required
 def borrar_perfil(request):
-    user_activo = request.user.username
+    user_activo = request.user.usuario
     User.objects.filter(email=request.POST.get('email_borrar')).delete()
     return render(request, 'index.html')
+
+@login_required
+def aniadir_dieta(request):
+    user_activo = request.user.usuario
+    if request.method == 'POST':
+        form = DietaForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            dieta = Dieta.objects.all()
+            return render(request, 'mostrar_dieta.html', {'dieta': dieta, 'login': user_activo})
+
+    else:
+        form = DietaForm()
+
+    return render(request, 'añadir_dieta.html', {'form': form, 'login': user_activo})
+
+@login_required
+def mostrar_dieta(request):
+    user_activo = request.user.usuario
+    dieta = Dieta.objects.all()
+    return render(request,'mostrar_dieta.html', context={'dieta':dieta, 'login': user_activo})
