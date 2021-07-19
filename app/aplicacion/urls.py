@@ -20,8 +20,8 @@ urlpatterns = [
   url('admin/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
   url('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
   url('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-  #url('lista_dietas', views.lista_dietas, name='lista_dietas'),
-  #url('dieta', views.dieta, name='dieta'),
+  url('mostrar_dieta', views.mostrar_dieta, name='mostrar_dieta'),
+  url('dieta', views.aniadir_dieta, name='aniadir_dieta'),
   #url('modificar_dieta', views.modificar_dieta, name='modificar_dieta'),
   #url('borrar_dieta', views.borrar_dieta, name='borrar_dieta'),
 ]

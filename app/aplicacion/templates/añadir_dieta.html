@@ -1,0 +1,23 @@
+
+{% extends "index.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card card-info">
+    <div class="card-header">
+        <h3 class="card-title">Nuevo producto</h3>
+    </div>
+    <form role="form" method="POST">
+        <div class="card-body">
+            {% csrf_token %}
+            {{ form|crispy }}
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info" value="Guardar">Guardar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+     
