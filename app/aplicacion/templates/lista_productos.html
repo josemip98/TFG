@@ -4,53 +4,49 @@
 
   <div class="card card-info">
     <div class="card-header">
-      <h3 class="card-title">Listado de productos</h3>
+      <h2>Listado de productos</h2>
     </div>
   {% if productos %}            
   <table class="table table-white table-striped">
     <thead>
+      <div class="card-body">
       <tr>
         <th>Nombre</th>
         <th>Marca</th>
-        <th>Calorias</th>
-        <th>Hidratos</th>
-        <th>Grasa</th>
-        <th>Proteinas</th>
-        {% if user.is_staff %}
-          <th>Modificar</th>
-          <th>Eliminar</th>
-        {% endif %}
+        <th>Pais</th>
       </tr>
     </thead>
     <tbody>
     <!-- jinja2 --> 
-      {% for i in productos %}
+      {% for producto in page_obj %}
         <tr>
-          <td>{{i.nombre}}</td>
-          <td>{{i.marca}}</td>
-          <td>{{i.calorias}}</td>
-          <td>{{i.hidratos}}</td>
-          <td>{{i.grasa}}</td>
-          <td>{{i.proteinas}}</td>
-          {% if user.is_staff %}
-            <td><form action="{% url 'modificar_producto' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="titulo_modificar" value="{{ i.name }}">
-                <input type="submit" class="btn-table" value="Update"></form>
-            </td>
-            <td><form action="{% url 'borrar_producto' %}" method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="titulo_borrar" value="{{ i.name }}">
-                <input type="submit" class="btn-table" value="Delete"></form>
-            </td>
-            {% endif %}
+          <td><a href="/producto/{{producto.id}}">{{producto.nombre|upper}}</a></td>
+          <td>{{producto.marca}}</td>
+          <td>{{producto.pais}}</td>
         </tr>
       {% endfor %}
-    {% else %}
-    <div class="info">
-      <p>Actualmente no hay productos en la web. Intente añadir uno.</p>
-    </div>
-    {% endif %}
     </tbody>
   </table>
+  {% endif %} 
+  <div class="card-footer">
+    <div class="pagination">
+      <span class="step-links">
+          {% if page_obj.has_previous %}
+              <a href="?page=1">&laquo; Primera</a>
+              <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+          {% endif %}
+  
+          <span class="current">
+              Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+          </span>
+  
+          {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+          {% endif %}
+      </span>
+    </div>
+  </div> 
+  </div>
+</div>
 {% endblock %}

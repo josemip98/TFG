@@ -26,34 +26,35 @@ def index(request):
         return render(request, 'index.html')
 
 def lista_productos(request):
-    user_activo = request.user.usuario
-    # df = pd.read_csv("data/nutrition.csv")
-  
-    # parsing the DataFrame in json format.
-    #json_records = df.reset_index().to_json(orient ='records')
-    #data = []
-    #data = json.loads(json_records)
-    productos = Producto.objects.all()
-    context = {'login': user_activo,'productos': productos}
-
+    productos = Producto.objects.get_queryset().order_by('nombre')
     if request.user.is_authenticated:
-        return render(request, 'lista_productos.html', context)
+        user_activo = request.user.usuario
+        paginator = Paginator(productos, 25) # Show 25 contacts per page.
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'lista_productos.html', {'page_obj': page_obj,'productos': productos, 'login': user_activo})
 
     else:
-        return render(request, 'lista_productos.html', context)
+        paginator = Paginator(productos, 25) # Show 25 contacts per page.
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'lista_productos.html', {'page_obj': page_obj,'productos': productos})
 
 def productos_detalle(request, pk):
-    user_activo = request.user.usuario
+
     try:
         producto_id=Producto.objects.get(pk=pk)
     except Producto.DoesNotExist:
         raise ("Producto no existe")
 
-    return render(
-        request,
-        'productos_detalle.html',
-        context={'producto':producto_id, 'login': user_activo}
-    )
+    if request.user.is_authenticated:
+        user_activo = request.user.usuario
+
+        return render(request,'productos_detalle.html',context={'producto':producto_id, 'login': user_activo})
+    else:
+        return render(request,'productos_detalle.html',context={'producto':producto_id,})
 
 @login_required
 def aniadir_producto(request):
