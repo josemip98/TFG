@@ -1,10 +1,10 @@
 from django.forms.widgets import DateInput
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as do_login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from .models import Dieta, Producto, Usuario
@@ -14,6 +14,8 @@ import json
 import csv
 import pandas as pd
 from datetime import datetime
+from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
 
 
 # Create your views here.
@@ -64,8 +66,7 @@ def aniadir_producto(request):
 
         if form.is_valid():
             form.save()
-            productos = Producto.objects.all()
-            return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
+            return redirect('/lista_productos/')
 
     else:
         form = ProductoForm()
@@ -75,29 +76,24 @@ def aniadir_producto(request):
 
 def login(request):
     form = AuthenticationForm()
-    if request.method == "POST":
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            usuario = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(usuario=request.POST['username'],password=request.POST['password'])
-
-            if user is not None:
-                do_login(request, user)
-                return render(request, "index.html", {'login': usuario})
+    if request.method == "POST" and form.is_valid():
+        user = form.get_user_model()
+        login(request, user)
+        return render(request, "index.html", {'login': user})
+                
     return render(request, "login.html", {'form': form})
 
 
 def registro(request):
     if request.method == 'POST':
-        form = UsuarioForm(request.POST,request.FILES)
+        form = UserCreationForm(request.POST,request.FILES)
 
         if form.is_valid():
-            form.save()
-            productos = Producto.objects.all()
-            return render(request, 'index.html', {'productos': productos})
+            user = form.get_user_model()
+            login(request, user)
+            return render(request, 'index.html', {'usuario': user})
     else:
-        form = UsuarioForm()
+        form = UserCreationForm()
 
     return render(request, 'registro.html', {'form': form})
 
@@ -124,11 +120,10 @@ def modificar_producto(request):
         nombre = request.POST.get('nombre')
         marca = request.POST.get('marca')
         calorias = request.POST.get('calorias')
-        hidratos = request.POST.get('hidratos')
         grasa = request.POST.get('grasa')
         proteinas = request.POST.get('proteinas')
         Producto.objects.filter(id=id).update(
-            nombre='nombre', marca='marca', calorias='calorias', hidratos='hidratos', grasa='grasa', proteinas='proteinas')
+            nombre='nombre', marca='marca', calorias='calorias', grasa='grasa', proteinas='proteinas')
         productos = Producto.objects.all()
         return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
 
@@ -156,12 +151,12 @@ def mostrar_perfil(request):
 def modificar_perfil(request):
     user_activo = request.user.usuario
     if request.method == 'POST' and 'modificado' in request.POST:
-        nombre = request.POST.get('nombre')
-        apellidos = request.POST.get('apellidos')
-        fecha_nacimiento = request.POST.get('fecha_nacimiento')
-        genero = request.POST.get('genero')
-        altura = request.POST.get('altura')
-        peso = request.POST.get('peso')
+        nombre = request.user.nombre
+        apellidos = request.user.apellidos
+        fecha_nacimiento = request.user.fecha_nacimiento
+        genero = request.user.genero
+        altura = request.user.altura
+        peso = request.user.peso
         Usuario.objects.filter(email=request.user.email).update(nombre=nombre, apellidos=apellidos, fecha_nacimiento=fecha_nacimiento, genero=genero, altura=altura, peso=peso)
         usuario = Usuario.objects.filter(email=request.user.email)
         return render(request, 'mostrar_perfil.html', {'usuario': usuario, 'login': user_activo})
@@ -173,8 +168,7 @@ def modificar_perfil(request):
 
 @login_required
 def borrar_perfil(request):
-    user_activo = request.user.usuario
-    User.objects.filter(email=request.POST.get('email_borrar')).delete()
+    Usuario.objects.filter(email=request.POST.get('email_borrar')).delete()
     return render(request, 'index.html')
 
 @login_required
@@ -196,5 +190,8 @@ def aniadir_dieta(request):
 @login_required
 def mostrar_dieta(request):
     user_activo = request.user.usuario
-    dieta = Dieta.objects.all()
+    if(request.user.is_staff):
+        dieta = Dieta.objects.all()
+    else:
+        dieta = Dieta.objects.filter(usuario=user_activo.usuario)
     return render(request,'mostrar_dieta.html', context={'dieta':dieta, 'login': user_activo})
