@@ -12,7 +12,9 @@
             <h2>{{ producto.nombre }}</h2>
         </div>
         <div class="row">
-            <img src="{{producto.image_url}}" class="rounded float-right" width="250" height="250">
+            {% if producto.imagen %}
+                <img src="{{producto.image_url}}" class="rounded float-right" width="250" height="250">
+            {% endif %}
         </div>
         <div class="row">
             {% if producto.marca %}
@@ -149,17 +151,47 @@
         </div>
         </form>
     </div>
-    {% if producto.is_staff %}
-    <form action="{% url 'modificar_producto' %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="titulo_modificar" value="{{ producto.id }}">
-        <input type="submit" class="btn-table" value="Modificar">
-    </form>
-    <form action="{% url 'borrar_producto' %}" method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="titulo_borrar" value="{{ producto.nombre }}">
-        <input type="submit" class="btn-table" value="Eliminar">
-    </form>
+    {% if user.is_staff %}
+    <div class="card-body">
+    <div class="row">
+    <div class="col-1">
+        <form action="{% url 'modificar_producto' producto.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="producto_modificar" value="{{ producto.nombre }}">
+            <input type="submit" class="btn btn-danger" value="Modificar">
+        </form>
+    </div>
+    <div class="col-md-auto">
+        <button class="btn btn-danger" data-toggle="modal" data-target="#fm-modal-grid">Eliminar</button>
+        <div class="modal fade" id="fm-modal-grid" tabindex="-1"
+            role="dialog" aria-labelledBy="fm-modal-grid"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>  
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12 col-sm-6">
+                                    <p>¿Estas seguro que deseas eliminar el producto {{producto.nombre}}?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'borrar_producto' producto.id %}" class="btn btn-danger">Sí, estoy seguro.</a>
+                        <button class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
     {% endif %}
     <div class="card-footer">
         <div class="col-2">

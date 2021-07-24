@@ -47,16 +47,16 @@ def lista_productos(request):
 def productos_detalle(request, pk):
 
     try:
-        producto_id=Producto.objects.get(pk=pk)
+        id_producto=Producto.objects.get(pk=pk)
     except Producto.DoesNotExist:
         raise ("Producto no existe")
 
     if request.user.is_authenticated:
         user_activo = request.user.usuario
 
-        return render(request,'productos_detalle.html',context={'producto':producto_id, 'login': user_activo})
+        return render(request,'productos_detalle.html',context={'producto':id_producto, 'login': user_activo})
     else:
-        return render(request,'productos_detalle.html',context={'producto':producto_id,})
+        return render(request,'productos_detalle.html',context={'producto':id_producto,})
 
 @login_required
 def aniadir_producto(request):
@@ -75,13 +75,15 @@ def aniadir_producto(request):
 
 
 def login(request):
-    form = AuthenticationForm()
-    if request.method == "POST" and form.is_valid():
-        user = form.get_user_model()
+    form = AuthenticationForm(request=request, data=request.POST)
+    username = form.cleaned_data.post('username')
+    password = form.cleaned_data.post('password')
+    user = authenticate(username=username, password=password)
+    if user is not None:
         login(request, user)
-        return render(request, "index.html", {'login': user})
-                
-    return render(request, "login.html", {'form': form})
+        return redirect('/')
+    form = AuthenticationForm()
+    return render(request,"login.html",context={"form":form})
 
 
 def registro(request):
@@ -113,33 +115,18 @@ def buscar_producto(request):
         return render(request, 'buscar_producto.html', {'form': form, 'login': user_activo})
 
 @login_required
-def modificar_producto(request):
+def modificar_producto(request, id_producto):
     user_activo = request.user.usuario
-    if request.method == 'POST' and 'modificado' in request.POST:
-        id = request.POST.get('id')
-        nombre = request.POST.get('nombre')
-        marca = request.POST.get('marca')
-        calorias = request.POST.get('calorias')
-        grasa = request.POST.get('grasa')
-        proteinas = request.POST.get('proteinas')
-        Producto.objects.filter(id=id).update(
-            nombre='nombre', marca='marca', calorias='calorias', grasa='grasa', proteinas='proteinas')
-        productos = Producto.objects.all()
-        return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
-
-    else:
-        producto = Producto.objects.filter(nombre=request.POST.get('nombre_modificar'))
-        data = {producto.nombre, producto.marca, producto.calorias, producto.hidratos, producto.grasa, producto.proteinas}
-        form = ProductoForm(data)
-        return render(request, 'modificar_producto.html', {'form': form, 'login': user_activo})
+    producto = Producto.objects.filter(id=id_producto).first()
+    data = {producto.nombre, producto.calorias, producto.proteinas, producto.grasa}
+    form = ProductoForm(data)
+    return render(request, 'modificar_producto.html', {'form': form, 'login': user_activo})
 
 
 @login_required
-def borrar_producto(request):
-    user_activo = request.user.usuario
-    Producto.objects.filter(nombre=request.POST.get('titulo_borrar')).delete()
-    productos = Producto.objects.all()
-    return render(request, 'lista_productos.html', {'productos': productos, 'login': user_activo})
+def borrar_producto(request, id_producto):
+    Producto.objects.filter(id=id_producto).delete()
+    return redirect('/lista_productos/')
 
 @login_required
 def mostrar_perfil(request):
