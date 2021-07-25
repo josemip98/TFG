@@ -6,7 +6,7 @@ from django.urls import reverse
 # Create your models here.
 
 class UsuarioManager(BaseUserManager):
-  def create_user(self,email,usuario,nombre,apellidos,contraseña = None):
+  def create_user(self,email,usuario,nombre,apellidos,password):
     if not email:
       raise ValueError('El usuario debe tener un correo electrónico')
 
@@ -14,10 +14,10 @@ class UsuarioManager(BaseUserManager):
         usuario = usuario,
         email = self.normalize_email(email),
         nombre = nombre,
-        apellidos = apellidos
+        apellidos = apellidos,
+        password = password
     )
 
-    user.set_password(contraseña)
     user.save()
     return user
 
@@ -27,22 +27,22 @@ class UsuarioManager(BaseUserManager):
       usuario=usuario,
       nombre=nombre,
       apellidos = apellidos,
-      contraseña = password
+      password = password
     )
     user.administrador = True
     user.save()
     return user
 
 class Usuario(AbstractBaseUser):
+  id = models.AutoField(primary_key=True)
   usuario = models.CharField('Usuario', max_length=200, unique=True)
   email = models.EmailField('Email', max_length=200, unique=True)
-  contraseña = models.CharField(max_length=50)
   nombre = models.CharField(max_length=200, null=False)
   apellidos = models.CharField(max_length=200, null=True)
   fecha_nacimiento = models.DateField(default=None, blank=True, null=True)
   genero = models.CharField(max_length=10, null=True)
-  altura = models.DecimalField(max_digits=6,decimal_places=1,blank=True, null=True)
-  peso = models.DecimalField(max_digits=6,decimal_places=1,blank=True, null=True)
+  altura = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  peso = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   imagen = models.ImageField('Imagen de perfil', upload_to='perfil/', height_field=None, width_field=None, max_length=200, null=True)
   administrador = models.BooleanField(default=False)
   activo = models.BooleanField(default=True)
@@ -54,7 +54,7 @@ class Usuario(AbstractBaseUser):
   REQUIRED_FIELDS = ['email', 'nombre', 'apellidos']
 
   def __str__(self):
-    return f'{self.nombre},{self.apellidos}'
+    return f'{self.nombre}'
 
   def has_perm(self,perm,obj = None):
     return True
@@ -67,31 +67,34 @@ class Usuario(AbstractBaseUser):
     return self.administrador
 
 class Producto(models.Model):
+  id = models.AutoField(primary_key=True)
   nombre = models.CharField(max_length=100, unique=True)
   marca = models.CharField(max_length=100, null=True)
+  categoria = models.TextField(null=True)
   tienda = models.CharField(max_length=200, null=True)
   pais = models.CharField(max_length=100, null=True)
-  alergenos = models.CharField(max_length=200, null=True)
-  cantidad_servicio = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  aditivos = models.CharField(max_length=200, null=True)
-  puntuacion_nova = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
+  ingredientes = models.TextField(null=True)
+  alergenos = models.TextField(null=True)
+  aditivos = models.TextField(null=True)
+  puntuacion_nova = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   image_url = models.CharField(max_length=200, null=True)
   image_small_url = models.CharField(max_length=200, null=True)
-  calorias = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  energia = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  grasa = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  grasas_saturadas = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  grasas_trans = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  colesterol = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  carbohidratos = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  azucares = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  fibra = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  proteinas = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  sal = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  sodio = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  calcio = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  hierro = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
-  puntuacion = models.DecimalField(max_digits=6,decimal_places=3,blank=True, null=True)
+  calorias = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  energia = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  grasa = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  grasas_saturadas = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  colesterol = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  carbohidratos = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  azucares = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  fibra = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  proteinas = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  sal = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  sodio = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  calcio = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  hierro = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  puntuacion = models.IntegerField(blank=True, null=True)
+
+  REQUIRED_FIELDS = ['nombre', 'calorias', 'grasa', 'proteinas']
 
   def get_absolute_url(self):
     return reverse('productos_detalle', args=[str(self.id)])
@@ -100,6 +103,7 @@ class Producto(models.Model):
     return self.nombre
 
 class Dieta(models.Model):
+  id = models.AutoField(primary_key=True)
   nombre = models.CharField(max_length=200, null=True)
   descripcion = models.TextField(max_length=200, null=True)
   productos = models.ManyToManyField(Producto)
@@ -107,3 +111,6 @@ class Dieta(models.Model):
 
   def __str__(self):
     return self.nombre
+
+  def get_productos(self):
+    return ", ".join([p.nombre for p in self.productos.all()])

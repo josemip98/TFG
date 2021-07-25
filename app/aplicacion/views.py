@@ -16,6 +16,8 @@ import pandas as pd
 from datetime import datetime
 from django.contrib.auth import get_user_model
 from django.template.loader import render_to_string
+import random
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -75,27 +77,44 @@ def aniadir_producto(request):
 
 
 def login(request):
-    form = AuthenticationForm(request=request, data=request.POST)
-    username = form.cleaned_data.post('username')
-    password = form.cleaned_data.post('password')
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect('/')
-    form = AuthenticationForm()
-    return render(request,"login.html",context={"form":form})
+    form = LoginForm(request.POST)
+    if request.method == 'POST' and form.is_valid():
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        print(username)
+        print(password)
+        user = authenticate(request, username=username, password=password)
+        print(user)
+        if user is not None:
+            do_login(request,user)
+            return redirect('index')
+        else:
+            form = LoginForm(request.POST)
+            return render(request,"login.html",context={"form":form})
+
+    else:
+        form = LoginForm(request.POST)
+        return render(request,"login.html",context={"form":form})
 
 
 def registro(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST,request.FILES)
+        form = UsuarioForm(request.POST,request.FILES)
 
         if form.is_valid():
-            user = form.get_user_model()
-            login(request, user)
-            return render(request, 'index.html', {'usuario': user})
+            username = request.POST['usuario']
+            password = request.POST['password']
+            password = make_password(password)
+            email = request.POST['email']
+            nombre = request.POST['nombre']
+            apellidos = request.POST['apellidos']
+            genero = request.POST['genero']
+            usuario = Usuario.objects.create(usuario=username, password=password, email=email, nombre=nombre, apellidos=apellidos, genero=genero)
+            usuario.save()
+            do_login(request, usuario)
+            return render(request, 'index.html', {'usuario': usuario})
     else:
-        form = UserCreationForm()
+        form = UsuarioForm()
 
     return render(request, 'registro.html', {'form': form})
 
@@ -180,5 +199,21 @@ def mostrar_dieta(request):
     if(request.user.is_staff):
         dieta = Dieta.objects.all()
     else:
-        dieta = Dieta.objects.filter(usuario=user_activo.usuario)
+        dieta = Dieta.objects.filter(usuario=request.user.id)
+
     return render(request,'mostrar_dieta.html', context={'dieta':dieta, 'login': user_activo})
+
+@login_required
+def generar_dieta(request):
+    items = list(Producto.objects.all())
+
+    random_items = random.sample(items, 10)
+    print(random_items)
+    dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
+    dieta.save()
+    for p in random_items:
+        producto = Producto.objects.get(id=p.id)
+        print(producto)
+        dieta.productos.add(producto.id)
+        
+    return redirect('/mostrar_dieta/')

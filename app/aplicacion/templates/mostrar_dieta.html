@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card card-info">
+  <div class="card-header">
+    <h2>Dieta</h2>
+  </div>
+  <div class="card-body">
+  {% if dieta %}
+  <table id="example" class="table table-bordered table-striped table-hover datatable">
+        <thead>
+          <tr>
+              <th>Nombre</th>
+              <th>Descripcion</th>
+              <th>Productos</th>
+              <th>Usuario</th>
+              <th>Exportar</th>
+          </tr>
+        </thead>
+        {% for i in dieta %}
+        <tbody>
+        <tr>
+            <td>{{ i.nombre }}</td>
+            <td>{{ i.descripcion }}</td>
+            <td>{{ i.get_productos }}</td>
+            <td>{{ i.usuario }}</td>
+            <td><a class="btn btn-info" href="">PDF</a></td>
+        </tr>
+      </tbody>
+        {% endfor %}
+    </table>
+  </div>
+    <div class="card-footer">
+      <div class="col-8">
+        <a class="btn btn-default" href=" {% url 'index' %} ">Cancelar</a>
+      </div>
+    </div>
+    {% else %}
+    <h4>Actualmente no hay ninguna dieta registrada para este usuario.</h4>
+    {% endif %}
+</div>
+{% endblock %}

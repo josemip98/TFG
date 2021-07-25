@@ -17,9 +17,9 @@ class UsuarioForm(forms.ModelForm):
 
 class ProductoForm(forms.ModelForm):
     nombre = forms.CharField(required=True)
-    calorias = forms.CharField(required=True)
-    grasa = forms.CharField(required=True)
-    proteinas = forms.CharField(required=True)
+    calorias = forms.DecimalField(required=True)
+    grasa = forms.DecimalField(required=True)
+    proteinas = forms.DecimalField(required=True)
     marca = forms.CharField(required=False)
     tienda = forms.CharField(required=False)
     pais = forms.CharField(required=False)
