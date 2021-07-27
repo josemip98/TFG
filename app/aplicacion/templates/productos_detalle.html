@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -12,7 +12,7 @@
             <h2>{{ producto.nombre }}</h2>
         </div>
         <div class="row">
-            {% if producto.imagen %}
+            {% if producto.image_url %}
                 <img src="{{producto.image_url}}" class="rounded float-right" width="250" height="250">
             {% endif %}
         </div>

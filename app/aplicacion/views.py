@@ -104,7 +104,7 @@ def registro(request):
             usuario = Usuario.objects.create(usuario=username, password=password, email=email, nombre=nombre, apellidos=apellidos, genero=genero)
             usuario.save()
             do_login(request, usuario)
-            return render(request, 'index.html', {'usuario': usuario})
+            return render(request, 'base.html', {'usuario': usuario})
     else:
         form = UsuarioForm()
 
@@ -159,14 +159,13 @@ def modificar_perfil(request, id_usuario):
         return redirect('/mostrar_perfil/')
 
     else:
-        usuario = Usuario.objects.filter(id=id_usuario)
         form = UsuarioForm()
         return render(request, 'modificar_perfil.html', {'form': form, 'login': user_activo})
 
 @login_required
 def borrar_perfil(request):
     Usuario.objects.filter(email=request.POST.get('email_borrar')).delete()
-    return render(request, 'index.html')
+    return render(request, 'base.html')
 
 @login_required
 def aniadir_dieta(request):

@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -7,7 +7,7 @@
       <h2>Listado de productos</h2>
     </div>
   {% if productos %}            
-  <table class="table table-white table-striped">
+  <table id="account-details-result-table" class=" table table-bordered table-striped table-hover datatable">
     <thead>
       <div class="card-body">
       <tr>
@@ -16,7 +16,7 @@
         <th>Pais</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="search-results-table-tbody">
     <!-- jinja2 --> 
       {% for producto in page_obj %}
         <tr>
