@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Producto, Usuario, Dieta
+from django.conf import settings
 
 class UsuarioForm(forms.ModelForm):
     GENEROS= (
@@ -10,6 +11,10 @@ class UsuarioForm(forms.ModelForm):
     )
     genero = forms.ChoiceField(widget=forms.Select, choices=GENEROS)
     password = forms.CharField(widget=forms.PasswordInput)
+    fecha_nacimiento = forms.DateField(
+    localize=True,
+    widget=forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date'}),
+)
     imagen = forms.DecimalField(required=False)
     class Meta:
         model = Usuario

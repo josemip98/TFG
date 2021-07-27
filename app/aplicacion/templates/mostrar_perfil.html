@@ -3,12 +3,12 @@
 {% block content %}
 <div class="card card-info">
   <div class="card-header">
-    <h3>Perfil</h3>
+    <h2>Perfil</h2>
   </div>
 
     <div class="card-body">
         <div class="col-md-12">
-            <form>
+            <form action="" method="POST">
               <div class="form-group row">
                 <label for="usuario" class="text-center col-sm-2 col-form-label">Usuario</label> 
                 <div class="col-2">
@@ -36,7 +36,7 @@
               <div class="form-group row">
                 <label for="fecha_nacimiento" class="text-center col-sm-2 col-form-label">Fecha de nacimiento</label> 
                 <div class="col-2">
-                  <input id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" class="form-control here" required="required" type="date" value="{{ user.fecha_nacimiento }}" readonly>
+                  <input id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" class="form-control here" required="required" type="date" value="{{ user.fecha_nacimiento|date:'Y-m-d' }}" readonly>
                 </div>
               </div>
               <div class="form-group row">
@@ -48,13 +48,13 @@
               <div class="form-group row">
                 <label for="altura" class="text-center col-sm-2 col-form-label">Altura</label> 
                 <div class="col-2">
-                  <input id="altura" name="altura" placeholder="Altura" class="form-control here" required="required" type="text" value="{{ user.altura }}" readonly>
+                  <input id="altura" name="altura" placeholder="Altura" class="form-control here" required="required" type="number" value="{{ user.altura }}" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="peso" class="text-center col-sm-2 col-form-label">Peso</label> 
                 <div class="col-2">
-                  <input id="peso" name="peso" placeholder="Peso" class="form-control here" required="required" type="text" value="{{ user.peso }}" readonly>
+                  <input id="peso" name="peso" placeholder="Peso" class="form-control here" required="required" type="number" value="{{ user.peso }}" readonly>
                 </div>
               </div>
               <div class="form-group row">
@@ -75,20 +75,39 @@
     <div class="card-body">
       <div class="row">
         <div class="col-1">
-          <form action="{% url 'modificar_perfil' %}" method="POST">
+          <form action="{% url 'modificar_perfil' user.id %}" method="POST">
             {% csrf_token %}
-            <input type="hidden" name="email_modificar" value="{{ user.email }}">
-            <input type="hidden" name="modificado" value="modificado">
             <input type="submit" class="btn btn-danger" value="Modificar">
           </form>
         </div>
     {% if user.is_staff %}
-    <div class="col-md-auto">
-        <form action="{% url 'borrar_perfil' %}" method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="email_borrar" value="{{ user.email }}">
-          <input type="submit" class="btn btn-danger" value="Eliminar">
-        </form>
+      <button class="btn btn-danger" data-toggle="modal" data-target="#fm-modal-grid">Eliminar</button>
+      <div class="modal fade" id="fm-modal-grid" tabindex="-1"
+          role="dialog" aria-labelledBy="fm-modal-grid"
+          aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button class="close" data-dismiss="modal" aria-label="Cerrar">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>  
+                  <div class="modal-body">
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-12 col-sm-6">
+                                  <p>¿Estas seguro que deseas eliminar tu usuario {{user.nombre}}?</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <a href="{% url 'borrar_perfil' %}" class="btn btn-danger">Sí, estoy seguro.</a>
+                      <button class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+
+                  </div>
+              </div>
+          </div>
       </div>
     {% endif %}
     </div>

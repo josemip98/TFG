@@ -82,7 +82,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <img src="{% static 'img/user.png' %}" class="img-circle elevation-2" alt="User Image">
               </div>
               <div class="info">
-                <a href="{% url 'mostrar_perfil' %}" class="d-block">{{ user.nombre }} {{ user.apellidos}}</a>
+                <a href="{% url 'mostrar_perfil' %}" class="d-block">{{ user.usuario }}</a>
                 <input type="hidden" name="email_modificar" value="{{ user.email }}">
               </div>
             </div>

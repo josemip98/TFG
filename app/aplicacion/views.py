@@ -1,23 +1,15 @@
-from django.forms.widgets import DateInput
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as do_login
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from .models import Dieta, Producto, Usuario
 from django.http import HttpResponseRedirect
-from .forms import ProductoForm, RegistroForm, LoginForm, UsuarioForm, BusquedaForm, DietaForm
-import json
-import csv
-import pandas as pd
-from datetime import datetime
-from django.contrib.auth import get_user_model
-from django.template.loader import render_to_string
+from .forms import ProductoForm, LoginForm, UsuarioForm, BusquedaForm, DietaForm
 import random
 from django.contrib.auth.hashers import make_password
+import time
 
 
 # Create your views here.
@@ -150,25 +142,24 @@ def borrar_producto(request, id_producto):
 @login_required
 def mostrar_perfil(request):
     user_activo = request.user.usuario
-    usuario = Usuario.objects.filter(email=request.POST.get('email'))
+    usuario = Usuario.objects.get(id=request.user.id)
     return render(request,'mostrar_perfil.html', context={'usuario':usuario, 'login': user_activo})
 
 @login_required
-def modificar_perfil(request):
+def modificar_perfil(request, id_usuario):
     user_activo = request.user.usuario
     if request.method == 'POST' and 'modificado' in request.POST:
-        nombre = request.user.nombre
-        apellidos = request.user.apellidos
-        fecha_nacimiento = request.user.fecha_nacimiento
-        genero = request.user.genero
-        altura = request.user.altura
-        peso = request.user.peso
-        Usuario.objects.filter(email=request.user.email).update(nombre=nombre, apellidos=apellidos, fecha_nacimiento=fecha_nacimiento, genero=genero, altura=altura, peso=peso)
-        usuario = Usuario.objects.filter(email=request.user.email)
-        return render(request, 'mostrar_perfil.html', {'usuario': usuario, 'login': user_activo})
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellidos']
+        fecha_nacimiento = request.POST['fecha_nacimiento']
+        genero = request.POST['genero']
+        altura = request.POST['altura']
+        peso = request.POST['peso']
+        Usuario.objects.filter(id=id_usuario).update(nombre=nombre, apellidos=apellidos, fecha_nacimiento=fecha_nacimiento, genero=genero, altura=altura, peso=peso)
+        return redirect('/mostrar_perfil/')
 
     else:
-        usuario = Usuario.objects.filter(email=request.POST.get('email_modificar'))
+        usuario = Usuario.objects.filter(id=id_usuario)
         form = UsuarioForm()
         return render(request, 'modificar_perfil.html', {'form': form, 'login': user_activo})
 

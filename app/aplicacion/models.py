@@ -39,7 +39,7 @@ class Usuario(AbstractBaseUser):
   email = models.EmailField('Email', max_length=200, unique=True)
   nombre = models.CharField(max_length=200, null=False)
   apellidos = models.CharField(max_length=200, null=True)
-  fecha_nacimiento = models.DateField(default=None, blank=True, null=True)
+  fecha_nacimiento = models.DateField(blank=True, null=True)
   genero = models.CharField(max_length=10, null=True)
   altura = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   peso = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)

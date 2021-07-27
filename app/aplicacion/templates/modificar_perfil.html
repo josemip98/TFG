@@ -1,12 +1,88 @@
 {% extends "index.html" %}
 
 {% block content %}
-<h2>Modificar perfil</h2>
-<form class="form_pkm" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="email_modificar" value="{{ email.nombre }}">
-    <input type="hidden" name="modificado" value="modificado">
-    <input type="submit" value="Guardar">
-</form>
+<div class="card card-info">
+  <div class="card-header">
+    <h2>Perfil</h2>
+  </div>
+
+    <div class="card-body">
+        <div class="col-md-12">
+            <form action="{% url 'modificar_perfil' user.id %}" method="POST">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="usuario" class="text-center col-sm-2 col-form-label">Usuario</label> 
+                <div class="col-2">
+                  <input id="usuario" name="usuario" placeholder="Usuario" class="form-control here" required="required" type="text" value="{{ user.usuario }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="nombre" class="text-center col-sm-2 col-form-label">Nombre</label> 
+                <div class="col-2">
+                  <input id="nombre" name="nombre" placeholder="Nombre" class="form-control here" type="text" value="{{ user.nombre }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="apellidos" class="text-center col-sm-2 col-form-label">Apellidos</label> 
+                <div class="col-2">
+                  <input id="apellidos" name="apellidos" placeholder="Apellidos" class="form-control here" type="text" value="{{ user.apellidos }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="email" class="text-center col-sm-2 col-form-label">Email</label> 
+                <div class="col-2">
+                  <input id="email" name="email" placeholder="Email" class="form-control here" required="required" type="text" value="{{ user.email }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="fecha_nacimiento" class="text-center col-sm-2 col-form-label">Fecha de nacimiento</label> 
+                <div class="col-2">
+                  <input id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Fecha de nacimiento" class="form-control here" required="required" type="date" value="{{ user.fecha_nacimiento|date:'Y-m-d' }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="genero" class="text-center col-sm-2 col-form-label">Género</label> 
+                <div class="col-2">
+                  <select id="genero" name="genero" class="form-control here" type="text" value="{{ user.genero }}">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="altura" class="text-center col-sm-2 col-form-label">Altura</label> 
+                <div class="col-2">
+                  <input id="altura" name="altura" placeholder="Altura" class="form-control here" required="required" type="number" value="{{ user.altura }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="peso" class="text-center col-sm-2 col-form-label">Peso</label> 
+                <div class="col-2">
+                  <input id="peso" name="peso" placeholder="Peso" class="form-control here" required="required" type="number" value="{{ user.peso }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="rol" class="text-center col-sm-2 col-form-label">Administrador</label> 
+                <div class="col-2">
+                  <input id="rol" name="rol" placeholder="Rol" class="form-control here" required="required" type="text" value="{{ user.administrador }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="activo" class="text-center col-sm-2 col-form-label">Activo</label> 
+                <div class="col-2">
+                  <input id="activo" name="activo" placeholder="Activo" class="form-control here" required="required" type="text" value="{{ user.activo }}" readonly>
+                </div>
+              </div>
+              <input type="hidden" name="modificado" value="modificado">
+              <input type="submit" class="btn btn-danger" value="Modificar">
+            </form>
+        </div>
+    </div>
+    <div class="card-footer">
+      <div class="col-2">
+        <a class="btn btn-default" href=" {% url 'index' %} ">Cancelar</a>
+      </div>
+    </div>
+</div>
 {% endblock %}
