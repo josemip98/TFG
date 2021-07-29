@@ -9,8 +9,7 @@ from django.http import HttpResponseRedirect
 from .forms import ProductoForm, LoginForm, UsuarioForm, BusquedaForm, DietaForm
 import random
 from django.contrib.auth.hashers import make_password
-import time
-
+from decimal import Decimal
 
 # Create your views here.
 
@@ -128,10 +127,39 @@ def buscar_producto(request):
 @login_required
 def modificar_producto(request, id_producto):
     user_activo = request.user.usuario
-    producto = Producto.objects.filter(id=id_producto).first()
-    data = {producto.nombre, producto.calorias, producto.proteinas, producto.grasa}
-    form = ProductoForm(data)
-    return render(request, 'modificar_producto.html', {'form': form, 'login': user_activo})
+    if request.method == 'POST' and 'modificado' in request.POST:
+        nombre = request.POST['nombre']
+        marca = request.POST['marca']
+        tienda = request.POST['tienda']
+        pais = request.POST['pais']
+        alergenos = request.POST['alergenos']
+        aditivos = request.POST['aditivos']
+        puntuacion_nova = request.POST['puntuacion_nova']
+        image_url = request.POST['imagen']
+        calorias = request.POST['calorias']
+        energia = request.POST['energia']
+        grasa = request.POST['grasa']
+        grasas_saturadas = request.POST['grasas_saturadas']
+        colesterol = request.POST['colesterol']
+        carbohidratos = request.POST['carbohidratos']
+        azucares = request.POST['azucares']
+        fibra = request.POST['fibra']
+        proteinas = request.POST['proteinas']
+        sal = request.POST['sal']
+        sodio = request.POST['sodio']
+        calcio = request.POST['calcio']
+        hierro = request.POST['hierro']
+        puntuacion = request.POST['puntuacion']
+        Producto.objects.filter(id=id_producto).update(nombre=nombre, marca=marca, tienda=tienda, pais=pais, alergenos=alergenos, 
+        aditivos=aditivos, puntuacion_nova=puntuacion_nova, image_url=image_url, calorias=Decimal(calorias), energia=Decimal(energia), grasa=Decimal(grasa),
+        grasas_saturadas=Decimal(grasas_saturadas), colesterol=Decimal(colesterol), carbohidratos=Decimal(carbohidratos), azucares=Decimal(azucares), fibra=Decimal(fibra),
+        proteinas=Decimal(proteinas), sal=Decimal(sal), sodio=Decimal(sodio), calcio=Decimal(calcio), hierro=Decimal(hierro), puntuacion=puntuacion)
+        return redirect('lista_productos')
+
+    else:
+        form = ProductoForm()
+        producto = Producto.objects.get(id=id_producto)
+        return render(request, 'modificar_producto.html', {'form': form, 'login': user_activo, 'producto': producto})
 
 
 @login_required
@@ -196,9 +224,7 @@ def mostrar_dieta(request):
 @login_required
 def generar_dieta(request):
     items = list(Producto.objects.all())
-
     random_items = random.sample(items, 10)
-    print(random_items)
     dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
     dieta.save()
     for p in random_items:

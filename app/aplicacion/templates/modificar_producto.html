@@ -1,58 +1,187 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="card card-info">
-    <div class="card-header">
-      <h2>Modificar producto</h2>
-    </div>
+  <div class="card-header">
+    <h2>Modificar producto</h2>
+  </div>
     <div class="card-body">
-        <form class="form" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <label for="nombre" class="col-form-label">Nombre </label> 
+              <input id="nombre" name="nombre" placeholder="Nombre" class="form-control here" required="required" type="text" value="{{ producto.nombre }}">
+            </div>
+            <div class="col">
+              <label for="marca" class="col-form-label">Marca </label> 
+              <input id="marca" name="marca" placeholder="Marca" class="form-control here" type="text" value="{{ producto.marca }}">
+            </div>
+            <div class="col">
+              <label for="tienda" class="col-form-label">Tienda </label> 
+              <input id="tienda" name="tienda" placeholder="Tienda" class="form-control here" type="text" value="{{ producto.tienda }}">
+            </div>
+            <div class="col">
+              <label for="pais" class="col-form-label">Pais </label> 
+              <input id="pais" name="pais" placeholder="Pais" class="form-control here" type="text" value="{{ producto.pais }}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="alergenos" class="col-form-label">Alérgenos </label> 
+              <input id="alergenos" name="alergenos" placeholder="Alérgenos" class="form-control here" type="text" value="{{ producto.alergenos }}">
+            </div>
+            <div class="col">
+              <label for="aditivos" class="col-form-label">Aditivos </label> 
+              <input id="aditivos" name="aditivos" placeholder="Aditivos" class="form-control here" type="text" value="{{ producto.aditivos }}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="imagen" class="col-form-label">Imagen URL </label> 
+              <input id="imagen" name="imagen" placeholder="Imagen URL" class="form-control here" type="text" value="{{ producto.image_url }}">
+            </div>
+            <div class="col">
+              <label for="calorias" class="col-form-label">Calorías (g) </label> 
+              {% if producto.calorias %}
+              <input id="calorias" name="calorias" placeholder="Calorías" class="form-control here" required="required" type="number" step=".1" value="{{ producto.calorias|floatformat:0 }}">
+              {% else %}
+              <input id="calorias" name="calorias" placeholder="Calorías" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="energia" class="col-form-label">Energía (g) </label> 
+              {% if producto.energia %}
+              <input id="energia" name="energia" placeholder="Energía" class="form-control here" required="required" type="number" step=".1" value="{{ producto.energia|floatformat:0 }}">
+              {% else %}
+              <input id="energia" name="energia" placeholder="Energía" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="grasa" class="col-form-label">Grasa (g) </label> 
+              {% if producto.grasa %}
+              <input id="grasa" name="grasa" placeholder="Grasa" class="form-control here" required="required" type="number" step=".1" value="{{ producto.grasa|floatformat:0 }}">
+              {% else %}
+              <input id="grasa" name="grasa" placeholder="Grasa" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="grasas_saturadas" class="col-form-label">Grasas saturadas (g) </label> 
+              {% if producto.grasas_saturadas %}
+              <input id="grasas_saturadas" name="grasas_saturadas" class="form-control here" required="required" type="number" step=".1" value="{{ producto.grasas_saturadas|floatformat:0 }}">
+              {% else %}
+              <input id="grasas_saturadas" name="grasas_saturadas" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="colesterol" class="col-form-label">Colesterol (g) </label> 
+              {% if producto.colesterol %}
+              <input id="colesterol" name="colesterol" placeholder="Colesterol" class="form-control here" required="required" type="number" step=".1" value="{{ producto.colesterol|floatformat:0 }}">
+              {% else %}
+              <input id="colesterol" name="colesterol" placeholder="Colesterol" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="carbohidratos" class="col-form-label">Carbohidratos (g) </label> 
+              {% if producto.carbohidratos %}
+              <input id="carbohidratos" name="carbohidratos" class="form-control here" required="required" type="number" step=".1" value="{{ producto.carbohidratos|floatformat:0 }}">
+              {% else %}
+              <input id="carbohidratos" name="carbohidratos" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="azucares" class="col-form-label">Azúcares (g) </label> 
+              {% if producto.grasas_saturadas %}
+              <input id="azucares" name="azucares" class="form-control here" required="required" type="number" step=".1" value="{{ producto.azucares|floatformat:0 }}">
+              {% else %}
+              <input id="azucares" name="azucares" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="fibra" class="col-form-label">Fibra (g) </label> 
+              {% if producto.fibra %}
+              <input id="fibra" name="fibra" class="form-control here" required="required" type="number" step=".1" value="{{ producto.fibra|floatformat:0 }}">
+              {% else %}
+              <input id="fibra" name="fibra" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="proteinas" class="col-form-label">Proteínas (g) </label> 
+              {% if producto.proteinas %}
+              <input id="proteinas" name="proteinas" class="form-control here" required="required" type="number" step=".1" value="{{ producto.proteinas|floatformat:0 }}">
+              {% else %}
+              <input id="proteinas" name="proteinas" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="sal" class="col-form-label">Sal (g) </label> 
+              {% if producto.sal %}
+              <input id="sal" name="sal" class="form-control here" required="required" type="number" step=".1" value="{{ producto.sal|floatformat:0 }}">
+              {% else %}
+              <input id="sal" name="sal" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="sodio" class="col-form-label">Sodio (g) </label> 
+              {% if producto.sodio %}
+              <input id="sodio" name="sodio" class="form-control here" required="required" type="number" step=".1" value="{{ producto.sodio|floatformat:0 }}">
+              {% else %}
+              <input id="sodio" name="sodio" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="calcio" class="col-form-label">Calcio (g) </label> 
+              {% if producto.calcio %}
+              <input id="calcio" name="calcio" class="form-control here" required="required" type="number" step=".1" value="{{ producto.calcio|floatformat:0 }}">
+              {% else %}
+              <input id="calcio" name="calcio" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="hierro" class="col-form-label">Hierro (g) </label> 
+              {% if producto.hierro %}
+              <input id="hierro" name="hierro" placeholder="Hierro" class="form-control here" required="required" type="number" step=".1" value="{{ producto.hierro|floatformat:0 }}">
+              {% else %}
+              <input id="hierro" name="hierro" placeholder="Hierro" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="puntuacion_nova" class="col-form-label">Puntuacion Nova </label> 
+              {% if producto.puntuacion_nova %}
+              <input id="puntuacion_nova" name="puntuacion_nova" placeholder="Puntuacion Nova" class="form-control here" required="required" type="number" step=".1" value="{{ producto.puntuacion_nova|floatformat:0 }}">
+              {% else %}
+              <input id="puntuacion_nova" name="puntuacion_nova" placeholder="Puntuacion Nova" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+            <div class="col">
+              <label for="puntuacion" class="col-form-label">Puntuación </label> 
+              {% if producto.puntuacion %}
+              <input id="puntuacion" name="puntuacion" placeholder="Puntuación" class="form-control here" required="required" type="number" step=".1" value="{{ producto.puntuacion }}">
+              {% else %}
+              <input id="puntuacion" name="puntuacion" placeholder="Puntuación" class="form-control here" required="required" type="number" step=".1" value="0">
+              {% endif %}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-1">
+              <input type="hidden" name="modificado" value="modificado">
+              <input type="submit" class="btn btn-danger" value="Modificar">
+            </div>
+            </div>
+          </div>
         </form>
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-1">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                <button class="btn btn-danger" data-toggle="modal" data-target="#fm-modal-grid">Modificar</button>
-                <div class="modal fade" id="fm-modal-grid" tabindex="-1"
-                    role="dialog" aria-labelledBy="fm-modal-grid"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button class="close" data-dismiss="modal" aria-label="Cerrar">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>  
-                            <div class="modal-body">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-6">
-                                            <p>¿Estas seguro que deseas modificar el producto {{producto.nombre}}?</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="{% url 'modificar_producto' %}" class="btn btn-danger">Sí, estoy seguro.</a>
-                                <button class="btn btn-primary" data-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <input type="hidden" name="nombre_modificar" value="{{ producto.nombre }}">
-                <input type="hidden" name="modificado" value="modificado">
-                </form>
-            </div>
-        </div>
-    </div>    
     <div class="card-footer">
-        <div class="col-2">
+      <div class="col-2">
         <a class="btn btn-default" href=" {% url 'index' %} ">Cancelar</a>
-        </div>
+      </div>
     </div>
+</div>
 {% endblock %}

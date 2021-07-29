@@ -15,7 +15,7 @@ class UsuarioForm(forms.ModelForm):
     localize=True,
     widget=forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date'}),
 )
-    imagen = forms.DecimalField(required=False)
+    imagen = forms.ImageField(required=False)
     class Meta:
         model = Usuario
         fields = ('usuario','email','password', 'nombre','apellidos','fecha_nacimiento','genero','altura','peso','imagen')

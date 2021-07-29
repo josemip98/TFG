@@ -27,7 +27,6 @@
       {% endfor %}
     </tbody>
   </table>
-  {% endif %} 
   <div class="card-footer">
     <div class="pagination">
       <span class="step-links">
@@ -47,6 +46,12 @@
       </span>
     </div>
   </div> 
+  {% else %}
+  <div class="card-body">
+    <h4>Actualmente no hay ningún producto registrado en la web.</h4>
+  </div>
+  {% endif %} 
+  
   </div>
 </div>
 {% endblock %}

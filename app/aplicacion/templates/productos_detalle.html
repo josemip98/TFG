@@ -19,19 +19,19 @@
         <div class="row">
             {% if producto.marca %}
             <div class="form-group col-sm">
-                <label>Marca</label> 
+                <label>Marca </label> 
                 <input id="marca" name="marca" placeholder="Marca" class="form-control here" type="text" value="{{ producto.marca }}" readonly>
             </div>
             {% endif %}
             {% if producto.tienda %}
             <div class="form-group col-sm">
-                <label>Tienda</label> 
+                <label>Tienda </label> 
                 <input id="tienda" name="tienda" placeholder="Tienda" class="form-control here" required="required" type="text" value="{{ producto.tienda }}" readonly>
             </div>
             {% endif %}
             {% if producto.pais %}
             <div class="form-group col-sm">
-                <label>Pais</label> 
+                <label>Pais </label> 
                 <input id="pais" name="pais" placeholder="Pais" class="form-control here" required="required" type="text" value="{{ producto.pais }}" readonly>
             </div>
             {% endif %}
@@ -39,13 +39,13 @@
         <div class="row">
             {% if producto.alergenos %}
             <div class="col">
-                <label>Alérgenos</label> 
+                <label>Alérgenos </label> 
                 <input id="alergenos" name="alergenos" class="form-control here" required="required" type="text" value="{{ producto.alergenos }}" readonly>
             </div>
             {% endif %}
             {% if producto.aditivos %}
             <div class="col">
-                <label>Aditivos</label> 
+                <label>Aditivos </label> 
                 <input id="aditivos" name="aditivos" placeholder="Aditivos" class="form-control here" required="required" type="text" value="{{ producto.aditivos }}" readonly>
             </div>
             {% endif %}
@@ -53,25 +53,25 @@
         <div class="row">
             {% if producto.calorias %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Calorias</label> 
+                <label>Calorias (g)</label> 
                 <input id="calorias" name="calorias" placeholder="Calorias" class="form-control here" required="required" type="text" value="{{producto.calorias|floatformat:1}}" readonly>
             </div>
             {% endif %}
             {% if producto.energia %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Energía</label> 
+                <label>Energía (g)</label> 
                 <input id="energia" name="energia" placeholder="Energía" class="form-control here" required="required" type="text" value="{{ producto.energia|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.grasa %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Grasa</label> 
-                <input id="grasa" name="grasa" placeholder="Grasa" class="form-control here" required="required" type="text" value="{{ producto.grasa|floatformat:1 }}" readonly>
+                <label>Grasa (g)</label> 
+                <input id="grasa" name="grasa" placeholder="Grasa" class="form-control here" required="required" type="text" step=".1" value="{{ producto.grasa|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.grasas_saturadas %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Grasas saturadas</label> 
+                <label>Grasas saturadas (g)</label> 
                 <input id="grasas_saturadas" name="grasas_saturadas" placeholder="Grasas saturadas" class="form-control here" required="required" type="text" value="{{ producto.grasas_saturadas|floatformat:1 }}" readonly>
             </div>
             {% endif %}
@@ -79,25 +79,25 @@
         <div class="row">
             {% if producto.colesterol %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Colesterol</label> 
+                <label>Colesterol (g)</label> 
                 <input id="colesterol" name="colesterol" placeholder="Colesterol" class="form-control here" required="required" type="text" value="{{ producto.colesterol|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.carbohidratos %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Carbohidratos</label> 
+                <label>Carbohidratos (g)</label> 
                 <input id="carbohidratos" name="carbohidratos" placeholder="Carbohidratos" class="form-control here" required="required" type="text" value="{{ producto.carbohidratos|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.azucares %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Azúcares</label> 
+                <label>Azúcares(g)</label> 
                 <input id="azucares" name="azucares" placeholder="azucares" class="form-control here" required="required" type="text" value="{{ producto.azucares|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.fibra %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Fibra</label> 
+                <label>Fibra (g)</label> 
                 <input id="fibra" name="fibra" placeholder="fibra" class="form-control here" required="required" type="text" value="{{ producto.fibra|floatformat:1 }}" readonly>
             </div>
             {% endif %}
@@ -105,25 +105,25 @@
         <div class="row">
             {% if producto.proteinas %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Proteinas</label> 
+                <label>Proteinas (g)</label> 
                 <input id="proteinas" name="proteinas" placeholder="proteinas" class="form-control here" required="required" type="text" value="{{ producto.proteinas|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.sal %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Sal</label> 
+                <label>Sal (g)</label> 
                 <input id="sal" name="sal" placeholder="sal" class="form-control here" required="required" type="text" value="{{ producto.sal|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.sodio %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Sodio</label> 
+                <label>Sodio (g)</label> 
                 <input id="sodio" name="sodio" placeholder="sodio" class="form-control here" required="required" type="text" value="{{ producto.sodio|floatformat:1 }}" readonly>
             </div>
             {% endif %}
             {% if producto.calcio %}
             <div class="form-group col-md-3 col-sm-6">
-                <label>Calcio</label> 
+                <label>Calcio (g)</label> 
                 <input id="calcio" name="calcio" placeholder="calcio" class="form-control here" required="required" type="text" value="{{ producto.calcio|floatformat:1 }}" readonly>
             </div>
             {% endif %}
@@ -131,10 +131,9 @@
         <div class="row">
             {% if producto.hierro %}
                 <div class="form-group col-md-3 col-sm-6">
-                    <label>Hierro</label> 
+                    <label>Hierro (g)</label> 
                     <input id="hierro" name="hierro" placeholder="hierro" class="form-control here" required="required" type="text" value="{{ producto.hierro|floatformat:1 }}" readonly>
                 </div>
-            }
             {% endif %}
             {% if producto.puntuacion_nova %}
             <div class="form-group col-md-3 col-sm-6">
