@@ -6,10 +6,11 @@ from django.contrib.auth import login as do_login
 from django.core.paginator import Paginator
 from .models import Dieta, Producto, Usuario
 from django.http import HttpResponseRedirect
-from .forms import ProductoForm, LoginForm, UsuarioForm, BusquedaForm, DietaForm
+from .forms import ProductoForm, LoginForm, UsuarioForm, ContactoForm, DietaForm
 import random
 from django.contrib.auth.hashers import make_password
 from decimal import Decimal
+from django.db.models import Q
 
 # Create your views here.
 
@@ -18,7 +19,8 @@ def index(request):
         user_activo = request.user.usuario
         return render(request, 'index.html', {'login': user_activo})
     else:
-        return render(request, 'index.html')
+        form = LoginForm(request.POST)
+        return render(request,"login.html",context={"form":form})
 
 def lista_productos(request):
     productos = Producto.objects.get_queryset().order_by('nombre')
@@ -51,6 +53,14 @@ def productos_detalle(request, pk):
     else:
         return render(request,'productos_detalle.html',context={'producto':id_producto,})
 
+def contacto(request):
+    form = ContactoForm()
+    if request.user.is_authenticated:
+        user_activo = request.user.usuario
+        return render(request, 'contacto.html', {'login': user_activo, 'form': form})
+    else:
+        return render(request, 'contacto.html', {'form': form})
+
 @login_required
 def aniadir_producto(request):
     user_activo = request.user.usuario
@@ -72,10 +82,7 @@ def login(request):
     if request.method == 'POST' and form.is_valid():
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        print(username)
-        print(password)
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             do_login(request,user)
             return redirect('index')
@@ -116,13 +123,26 @@ def logout_view(request):
     return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
 
 def buscar_producto(request):
-    user_activo = request.user.usuario
-    if request.method == 'POST' and 'buscar' in request.POST:
-        producto = Producto.objects.get('nombre')
-        return render(request, 'productos_detalle.html', {'producto': producto, 'login': user_activo})
+
+    producto = request.GET.get('producto', '')
+
+    print(producto)
+
+    querys = Q(nombre__icontains=producto)
+
+    productos = Producto.objects.get_queryset().order_by('nombre').filter(querys)
+
+    paginator = Paginator(productos, 100)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    if request.user.is_authenticated:
+        user_activo = request.user.usuario
+        print(productos)
+        return render(request,'lista_productos.html',{'productos':productos, 'page_obj': page_obj, 'login': user_activo})
     else:
-        form = BusquedaForm()
-        return render(request, 'buscar_producto.html', {'form': form, 'login': user_activo})
+        return render(request,'lista_productos.html',{'productos':productos, 'page_obj': page_obj,})
 
 @login_required
 def modificar_producto(request, id_producto):

@@ -28,7 +28,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="{% url 'index' %}" class="nav-link">Inicio</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="#" class="nav-link">Contacto</a>
+          <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
         </li>
       </ul>
 
@@ -39,10 +39,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="navbar-search" href="#" role="button">
           <i class="fas fa-search"></i>
         </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
+        <div class="navbar-search-block col-sm-4">
+          <form class="form-inline" action="{% url 'buscar_producto' %}" method="GET">
             <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+              <input id="buscador" name="producto" class="form-control form-control-navbar" type="search" placeholder="Escribe el nombre de un producto" aria-label="Search">
               <div class="input-group-append">
                 <button class="btn btn-navbar" type="submit">
                   <i class="fas fa-search"></i>
@@ -55,6 +55,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </form>
         </div>
       </li>
+      </ul>
   </nav>
   <!-- /.navbar -->
 
