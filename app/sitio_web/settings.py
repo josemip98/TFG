@@ -26,7 +26,7 @@ SECRET_KEY = '&aa15lgp+@0b!i#!8gdf__77@ez-4iecl_zg9-au7mo5a)kgcg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'agile-thicket-17815.herokuapp.com']
 
 
 # Application definition
