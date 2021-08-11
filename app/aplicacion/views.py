@@ -242,14 +242,32 @@ def mostrar_dieta(request):
     return render(request,'mostrar_dieta.html', context={'dieta':dieta, 'login': user_activo})
 
 @login_required
+def ver_dieta(request, id_dieta):
+    user_activo = request.user.usuario
+
+    dieta = Dieta.objects.get(id=id_dieta)
+
+    if dieta is not None:
+        return render(request,'ver_dieta.html', {'dieta':dieta, 'login': user_activo})
+    else:
+        return render(request,'mostrar_dieta.html', {'dieta':dieta, 'login': user_activo})
+
+@login_required
 def generar_dieta(request):
-    items = list(Producto.objects.all())
-    random_items = random.sample(items, 10)
-    dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
-    dieta.save()
-    for p in random_items:
-        producto = Producto.objects.get(id=p.id)
-        print(producto)
-        dieta.productos.add(producto.id)
-        
-    return redirect('/mostrar_dieta/')
+    user_activo = request.user.usuario
+    if request.method == 'POST' and 'crear_dieta' in request.POST:
+        items = list(Producto.objects.all())
+        random_items = random.sample(items, 10)
+        dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
+        dieta.save()
+        for p in random_items:
+            producto = Producto.objects.get(id=p.id)
+            dieta.productos.add(producto.id)
+        return redirect('/mostrar_dieta/')
+    else:
+        return render(request,'generar_dieta.html', {'login': user_activo})
+
+@login_required
+def export_pdf(request):
+    user_activo = request.user.usuario
+    return render(request,'mostrar_dieta.html', {'login': user_activo})

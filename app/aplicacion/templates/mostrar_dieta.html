@@ -14,8 +14,8 @@
           <tr>
               <th>Nombre</th>
               <th>Descripcion</th>
-              <th>Productos</th>
               <th>Usuario</th>
+              <th>Visualizar</th>
               <th>Exportar</th>
           </tr>
         </thead>
@@ -24,9 +24,9 @@
         <tr>
             <td>{{ i.nombre }}</td>
             <td>{{ i.descripcion }}</td>
-            <td>{{ i.get_productos }}</td>
             <td>{{ i.usuario }}</td>
-            <td><a class="btn btn-info" href="">PDF</a></td>
+            <td><a class="btn btn-info" href=" {% url 'ver_dieta' i.id %} ">Ver</a></td>
+            <td><a class="btn btn-info" href="{% url 'export-pdf' %}">PDF</a></td>
         </tr>
       </tbody>
         {% endfor %}

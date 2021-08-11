@@ -67,8 +67,14 @@ class RegistroForm(forms.ModelForm):
     email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
 
 class LoginForm(forms.Form):
-     username = forms.CharField(max_length=150)
-     password = forms.CharField(widget = forms.PasswordInput)
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget = forms.PasswordInput)
 
 class BusquedaForm(forms.Form):
-     nombre = forms.CharField(max_length=150)
+    nombre = forms.CharField(max_length=150)
+
+class ContactoForm(forms.Form):
+    nombre = forms.CharField(max_length=150)
+    email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
+    asunto = forms.CharField(max_length=150, required=False)
+    comentario = forms.CharField(widget=forms.Textarea)

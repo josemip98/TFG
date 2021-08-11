@@ -1,0 +1,51 @@
+
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card card-info">
+    <div class="card-header">
+        <h2>Contacto</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-info alert-dismissible fade show top_margin">
+
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h3>¡Hola {{user.nombre}}!</h3>
+                    <p>Este es el formulario de contacto.</p>
+                    <p>Cualquie consulta o consejo no dude en ponerse en contacto conmigo mediante el formulario de abajo.</p>
+                    <p>¡Gracias por usar nuestra web!</p>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    <form role="form" method="POST">
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {{ form.nombre|as_crispy_field }}
+                </div>
+                <div class="col">
+                    {{ form.email|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ form.comentario|as_crispy_field }}
+                </div>
+                <div class="col">
+                    {{ form.asunto|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-info" value="Enviar">Enviar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -6,14 +6,46 @@
     <div class="card-header">
       <h2>Listado de productos</h2>
     </div>
+    <nav class="navbar navbar-light bg-light">
+      <form action="{% url 'buscar_producto' %}" method="GET">
+      <input id="buscador" name="producto" type="search" placeholder="Escribe el nombre de un producto" aria-label="Search" style="width: 250px;">
+        <button class="btn btn-navbar" type="submit">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </nav>
   {% if productos %}            
   <table id="account-details-result-table" class=" table table-bordered table-striped table-hover datatable">
     <thead>
       <div class="card-body">
       <tr>
         <th>Nombre</th>
-        <th>Marca</th>
-        <th>Pais</th>
+        <th>Calorías</th>
+        <th>Carbohidratos</th>
+        <th>Grasa</th>
+        <th>Proteinas</th>
+        <th>
+          <select name="sort_by_nutrient" class="form-control sort_by_nutrient"> 
+            <option value="marca">Marca</option>
+            <option value="categoria">Categoría</option>
+            <option value="tienda">Tienda</option>
+            <option value="pais">País</option>
+            <option value="ingredientes">Ingredientes</option>
+            <option value="aditivos">Aditivos</option>
+            <option value="alergenos">Alérgenos</option>                                                    
+            <option value="energia">Energia</option>
+            <option value="grasas_saturadas">Grasas saturadas</option>
+            <option value="colesterol">Colesterol</option>
+            <option value="azucares">Azúcares</option>
+            <option value="fibra">Fibra</option>
+            <option value="sal">Sal</option>
+            <option value="sodio">Sodio</option>
+            <option value="calcio">calcio</option>
+            <option value="hierro">Hierro</option>
+            <option value="puntuacion_nova">Puntuación NOVA</option>
+            <option value="puntuacion">Puntuación</option>
+          </select>
+        </th>
       </tr>
     </thead>
     <tbody id="search-results-table-tbody">
@@ -21,8 +53,11 @@
       {% for producto in page_obj %}
         <tr>
           <td><a href="/producto/{{producto.id}}">{{producto.nombre|upper}}</a></td>
-          <td>{{producto.marca}}</td>
-          <td>{{producto.pais}}</td>
+          <td>{{producto.calorias|floatformat:0}}</td>
+          <td>{{producto.carbohidratos|floatformat:0}}</td>
+          <td>{{producto.grasa|floatformat:0}}</td>
+          <td>{{producto.proteinas|floatformat:0}}</td>
+          <td></td>
         </tr>
       {% endfor %}
     </tbody>

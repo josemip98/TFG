@@ -15,10 +15,9 @@ class UsuarioManager(BaseUserManager):
         email = self.normalize_email(email),
         nombre = nombre,
         apellidos = apellidos,
-        password = password
     )
-
-    user.save()
+    user.set_password(password)
+    user.save(using=self._db)
     return user
 
   def create_superuser(self,usuario,email,nombre,apellidos,password):
@@ -29,8 +28,9 @@ class UsuarioManager(BaseUserManager):
       apellidos = apellidos,
       password = password
     )
+    
     user.administrador = True
-    user.save()
+    user.save(using=self._db)
     return user
 
 class Usuario(AbstractBaseUser):
@@ -41,8 +41,8 @@ class Usuario(AbstractBaseUser):
   apellidos = models.CharField(max_length=200, null=True)
   fecha_nacimiento = models.DateField(blank=True, null=True)
   genero = models.CharField(max_length=10, null=True)
-  altura = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
-  peso = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
+  altura = models.IntegerField(blank=True, null=True)
+  peso = models.IntegerField(blank=True, null=True)
   imagen = models.ImageField('Imagen de perfil', upload_to='perfil/', height_field=None, width_field=None, max_length=200, null=True)
   administrador = models.BooleanField(default=False)
   activo = models.BooleanField(default=True)
@@ -78,7 +78,6 @@ class Producto(models.Model):
   aditivos = models.TextField(null=True)
   puntuacion_nova = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   image_url = models.CharField(max_length=200, null=True)
-  image_small_url = models.CharField(max_length=200, null=True)
   calorias = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   energia = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   grasa = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
@@ -113,4 +112,4 @@ class Dieta(models.Model):
     return self.nombre
 
   def get_productos(self):
-    return ", ".join([p.nombre for p in self.productos.all()])
+    return [p for p in self.productos.all()]

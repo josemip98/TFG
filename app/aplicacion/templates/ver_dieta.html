@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="card card-info">
+  <div class="card-header">
+    <h2>Dieta</h2>
+  </div>
+  <div class="card-body">
+  {% if dieta %}
+  <h2>{{dieta.nombre}}</h2>
+  <p>{{dieta.descripcion}}</p>
+  <h3>Productos:</h3>
+  {% for p in dieta.get_productos %}
+  <p><a href="/producto/{{p.id}}">{{p|upper}}</a></p>
+  {% endfor %}
+  {% else %}
+    <h4>Actualmente no hay ninguna dieta registrada para este usuario.</h4>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}
