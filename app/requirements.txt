@@ -7,3 +7,5 @@ pandas>=1.1.0
 gunicorn
 whitenoise
 dj-database-url
+psycopg2==2.7.4
+python-decouple
