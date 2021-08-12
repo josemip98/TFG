@@ -20,7 +20,7 @@ def index(request):
         return render(request, 'index.html', {'login': user_activo})
     else:
         form = LoginForm(request.POST)
-        return render(request,"login.html",context={"form":form})
+        return render(request,"index.html",context={"form":form})
 
 def lista_productos(request):
     productos = Producto.objects.get_queryset().order_by('nombre')
