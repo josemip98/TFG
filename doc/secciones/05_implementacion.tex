@@ -1,0 +1,55 @@
+\chapter{Implementación}
+
+\section{Creación modelos base de datos}
+\subsection{Usuario}
+\subsection{Producto}
+\subsection{Dieta}
+
+\section{Creación formularios}
+\subsection{Usuario}
+\subsection{Producto}
+\subsection{Dieta}
+
+\section{URLs}
+
+\section{Importación de datos}
+
+\section{Usuarios}
+\subsection{Inicio sesión}
+\subsection{Cerrar sesión}
+\subsection{Registro}
+\subsection{Ver perfil}
+\subsection{Modificar perfil}
+
+\section{Productos}
+\subsection{Listado de productos}
+\subsection{Añadir producto}
+\subsection{Consultar producto}
+\subsection{Modificar producto}
+\subsection{Eliminar producto}
+\subsection{Paginador}
+\subsection{Búsqueda}
+\subsection{Búsqueda productos similares}
+
+\section{Dietas}
+\subsection{Mostrar dieta}
+\subsection{Generar dieta}
+\subsection{Crear dieta}
+\subsection{Ver dieta}
+\subsection{Exportar dieta a PDF}
+
+\section{Tests}
+
+\section{Despliegue}
+
+Por último, quedaría desplegar la aplicación, para ello voy a utilziar heroku.
+Heroku es una plataforma en la nube que nos permite desplegar aplicaciones web en cualuier lenguaje de programación.
+\\\\
+Además es muy sencillo, sólo tenemos que conectar nuestro repositorio de GitHub en el que tengamos el proyecto que queremos desplegar,
+podemos configurarlo para que con cada commit se haga el despliegue automaticamente.
+En mi caso, he utilizado python por tanto lo único que tengo que hacer es crear un archivo Procfile en el que incluiremos el nombre de la aplicación,
+el archivo requirements.txt con las librerias que tengamos que instalar y configurar el settings.py, que en mi caso fué poner a false el modo debug, conectar la base de datos,
+incluir libreria whitenoise para cargar archivos estáticos e incluir la url de despliegue para aceptar peticiones.
+\\\\
+Enlace de despligue:
+\url{https://agile-thicket-17815.herokuapp.com/}

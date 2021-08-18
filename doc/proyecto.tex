@@ -11,7 +11,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
 \usepackage{listings} % para insertar código con formato similar al editor
-\usepackage[spanish, es-tabla]{babel} % Selecciona el español para palabras introducidas automáticamente, p.ej. "septiembre" en la fecha y especifica que se use la palabra Tabla en vez de Cuadro
+\usepackage[english, en-tabla]{babel} % Selecciona el español para palabras introducidas automáticamente, p.ej. "septiembre" en la fecha y especifica que se use la palabra Tabla en vez de Cuadro
 \usepackage{url} % ,href} %para incluir URLs e hipervínculos dentro del texto (aunque hay que instalar href)
 \usepackage{graphics,graphicx, float} %para incluir imágenes y colocarlas
 \usepackage[gen]{eurosym} %para incluir el símbolo del euro
@@ -33,7 +33,7 @@
 \pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
 \fancyhead[L]{} % Empty left header
 \fancyhead[C]{} % Empty center header
-\fancyhead[R]{Me Llamo Así} % My name
+\fancyhead[R]{José Miguel Pelegrina Pelegrina} % My name
 \fancyfoot[L]{} % Empty left footer
 \fancyfoot[C]{} % Empty center footer
 \fancyfoot[R]{\thepage} % Page numbering for right footer
@@ -47,7 +47,7 @@
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
 \setcounter{secnumdepth}{4}
 \usepackage[Lenny]{fncychap}
-
+\graphicspath{ {./imagenes/} } 
 
 \begin{document}
 
@@ -72,39 +72,22 @@
 	% Introducción 
 	\input{secciones/01_introduccion}
 
-	% Descripción del problema y hasta donde se llega
+	% Descripción del problema
 	\input{secciones/02_descripcion}
 
 	% Estado del arte
-	% 	1. Crítica al estado del arte
-	% 	2. Propuesta
+	% Crítica al estado del arte
 	\input{secciones/03_estado_del_arte}
-	
+
+	% Planificación
 	\input{secciones/04_planificacion}
 
-	% Análisis del problema
-	% 1. Análisis de requisitos
-	% 2. Análisis de las soluciones
-	% 3. Solucion propuesta
-	% 4. Análisis de seguridad
-	\input{secciones/05_analisis}
-
-	% Desarrollo bajo sprints: 
-	% 	1. Permitir registros y login de usuarios
-	% 	2. Desarrollo del sistema de incidencias
-	% 	3. Desarrollo del sistema de denuncias administrativas y accidentes
-	% 	4. Desarrollo del sistema de croquis
-	%   5. Instalación de la aplicación de manera automática
-	\input{secciones/06_implementacion}
-
-	% Presupuesto
+	% Implementación
+	\input{secciones/05_implementacion}
 
 	% Conclusiones
-	\input{secciones/07_conclusiones}
-
 	% Trabajos futuros
-
-
+	\input{secciones/06_conclusiones}
 	
 	\newpage
 	\bibliography{bibliografia}
