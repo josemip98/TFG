@@ -15,10 +15,9 @@ class UsuarioForm(forms.ModelForm):
     localize=True,
     widget=forms.DateInput(format = '%Y-%m-%d',attrs={'type': 'date'}),
 )
-    imagen = forms.ImageField(required=False)
     class Meta:
         model = Usuario
-        fields = ('usuario','email','password', 'nombre','apellidos','fecha_nacimiento','genero','altura','peso','imagen')
+        fields = ('usuario','email','password', 'nombre','apellidos','fecha_nacimiento','genero','altura','peso')
 
 class ProductoForm(forms.ModelForm):
     nombre = forms.CharField(required=True)
@@ -33,8 +32,6 @@ class ProductoForm(forms.ModelForm):
     trazas = forms.CharField(required=False)
     aditivos = forms.CharField(required=False)
     categoria = forms.CharField(required=False)
-    image_url = forms.CharField(required=False)
-    image_small_url = forms.CharField(required=False)
     grasas_saturadas = forms.DecimalField(required=False)
     colesterol = forms.DecimalField(required=False)
     carbohidratos = forms.DecimalField(required=False)
@@ -48,7 +45,7 @@ class ProductoForm(forms.ModelForm):
 
     class Meta:
         model = Producto
-        fields = ('nombre','marca','tienda', 'pais','alergenos','aditivos','puntuacion_nova','image_url','image_small_url','calorias','energia','grasa','grasas_saturadas','colesterol','carbohidratos','azucares','fibra','proteinas','sal','sodio','calcio','hierro','puntuacion')
+        fields = ('nombre','marca','tienda', 'pais','alergenos','aditivos','puntuacion_nova','calorias','energia','grasa','grasas_saturadas','colesterol','carbohidratos','azucares','fibra','proteinas','sal','sodio','calcio','hierro','puntuacion')
 
 class DietaForm(forms.ModelForm):
     nombre = forms.CharField(required=False)

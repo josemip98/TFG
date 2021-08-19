@@ -77,7 +77,6 @@ class Producto(models.Model):
   alergenos = models.TextField(null=True)
   aditivos = models.TextField(null=True)
   puntuacion_nova = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
-  image_url = models.CharField(max_length=200, null=True)
   calorias = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   energia = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)
   grasa = models.DecimalField(max_digits=10,decimal_places=5,blank=True, null=True)

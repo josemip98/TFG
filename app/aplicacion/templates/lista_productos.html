@@ -24,28 +24,6 @@
         <th>Carbohidratos</th>
         <th>Grasa</th>
         <th>Proteinas</th>
-        <th>
-          <select name="sort_by_nutrient" class="form-control sort_by_nutrient"> 
-            <option value="marca">Marca</option>
-            <option value="categoria">Categoría</option>
-            <option value="tienda">Tienda</option>
-            <option value="pais">País</option>
-            <option value="ingredientes">Ingredientes</option>
-            <option value="aditivos">Aditivos</option>
-            <option value="alergenos">Alérgenos</option>                                                    
-            <option value="energia">Energia</option>
-            <option value="grasas_saturadas">Grasas saturadas</option>
-            <option value="colesterol">Colesterol</option>
-            <option value="azucares">Azúcares</option>
-            <option value="fibra">Fibra</option>
-            <option value="sal">Sal</option>
-            <option value="sodio">Sodio</option>
-            <option value="calcio">calcio</option>
-            <option value="hierro">Hierro</option>
-            <option value="puntuacion_nova">Puntuación NOVA</option>
-            <option value="puntuacion">Puntuación</option>
-          </select>
-        </th>
       </tr>
     </thead>
     <tbody id="search-results-table-tbody">
@@ -57,7 +35,6 @@
           <td>{{producto.carbohidratos|floatformat:0}}</td>
           <td>{{producto.grasa|floatformat:0}}</td>
           <td>{{producto.proteinas|floatformat:0}}</td>
-          <td></td>
         </tr>
       {% endfor %}
     </tbody>
