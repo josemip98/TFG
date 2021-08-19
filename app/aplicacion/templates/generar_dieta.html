@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card card-info">
+  <div class="card-header">
+    <h2>Generar dieta</h2>
+  </div>
+
+    <div class="card-body">
+        <div class="col-md-12">
+            <form action="{% url 'generar_dieta' %}" method="POST">
+                {% csrf_token %}
+              <div class="form-group row">
+                <label for="usuario" class="text-center col-sm-2 col-form-label">Usuario</label> 
+                <div class="col-2">
+                  <input id="usuario" name="usuario" placeholder="Usuario" class="form-control here" required="required" type="text" value="{{ user.usuario }}" readonly>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="genero" class="text-center col-sm-2 col-form-label">Género</label> 
+                <div class="col-2">
+                  <select id="genero" name="genero" class="form-control here" type="text" value="{{ user.genero }}">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="altura" class="text-center col-sm-2 col-form-label">Altura</label> 
+                <div class="col-2">
+                  <input id="altura" name="altura" placeholder="Altura" class="form-control here" type="number" value="{{ user.altura }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="peso" class="text-center col-sm-2 col-form-label">Peso</label> 
+                <div class="col-2">
+                  <input id="peso" name="peso" placeholder="Peso" class="form-control here" type="number" value="{{ user.peso }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="objetivo" class="text-center col-sm-2 col-form-label">Objetivo</label> 
+                <div class="col-2">
+                  <select id="objetivo" name="objetivo" class="form-control here" type="number">
+                    <option value="1">Ganar volumen</option>
+                    <option value="2">Perder peso</option>
+                    <option value="3">Aleatoria</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="alergias" class="text-center col-sm-2 col-form-label">Alergias</label> 
+                <div class="col-2">
+                  <select id="alergias" name="alergias" class="form-control here" type="number">
+                    <option value="1">Ninguna</option>
+                    <option value="2">Perder peso</option>
+                    <option value="3">Aleatoria</option>
+                  </select>
+                </div>
+              </div>
+              <input type="hidden" name="crear_dieta" value="crear_dieta">
+              <input type="submit" class="btn btn-danger" value="Crear dieta">
+            </form>
+        </div>
+    </div>
+    <div class="card-footer">
+      <div class="col-2">
+        <a class="btn btn-default" href=" {% url 'index' %} ">Cancelar</a>
+      </div>
+    </div>
+</div>
+{% endblock %}
