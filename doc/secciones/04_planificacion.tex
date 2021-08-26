@@ -1,29 +1,36 @@
 \chapter{Planificación}
 
 \section{Metodología utilizada}
-Para el desarrollo del proyecto he elegido la \textbf{metodología SCRUM}.
-Esta metodología es una de las más utilizadas en la actualidad y consiste en unas prácticas que permiten un trabajo de entregas que se va incrementando para el desarrollo de un producto. \\
-La gran característica de esta metodología y por lo que recibe el nombre es su agilidad ya que consiste en presentar una serie de objetivos y/o requisitos necesarios, se les asigna una prioridad y se asigna al personal que va a trabajar en el proyecto.
-Además otra característica es que el cliente va a poder empezar a utilizar el producto porque se va a ir desarrollando por partes por así decirlo.
+Para el desarrollo del proyecto he elegido una \textbf{metodología ágil}, en concreto la metodología \textbf{kanban}.
+Esta metodología es muy utilizada en la actualidad y consiste en unas prácticas que permiten un trabajo de entregas que se va incrementando para el desarrollo de un producto. \\\\
+La gran característica de estas metodologías y por lo que reciben su nombre es su agilidad ya que consiste en presentar una serie de objetivos y/o requisitos necesarios que se van dividiendo en problemas más pequeños 
+y se van resolviendo. A estos problemas se les asigna una prioridad y se asigna al personal que va a trabajar en el proyecto.\\\\
+Otras características de esta metodología son que el cliente va a poder empezar a utilizar el producto porque se va a ir desarrollando y muy pronto va a tener un software funcional, 
+además permite la posibilidad de ir añadiendo nuevos problemas a resolver o adaptar los actuales a lo largo del desarrollo del proyecto y evita la documentación excesiva, dando mucha flexibilidad tanto al programador como al cliente.\\
 
 Después se hace una planificación en la que se hace una estimación de los tiempos de entrega.
 A partir de ahí estos requisitos que bien pueden ser historias de usuario, tareas de mantenimiento o correción de bugs del proyecto se van realizando.
  
+\newpage
 \section{Seguimiento del desarrollo}
 
 Para el seguimiento y gestión del desarrollo he utilizado el software de control de versiones
-git en la plataforma Github. Esta plataforma me permite mediante un kanban organizar todo el proyecto
+git\cite{git} en la plataforma Github\cite{Github}.\\\\
+Esta plataforma me permite mediante un tablero organizar todo el proyecto
 y tener un listado de requerimientos mediante historias de usuarios y tareas pendientes (issues) asignandoles
 prioridad, asignandoselas a usuarios aunque en este caso todas estarán asignadas a mi ya que es un proyecto personal 
-y más posibilidades.
-
+y más posibilidades.\\\\
 Además para estar en contacto con mi tutor, he utilizado un Bot de Telegram que he conectado con mi repositorio y 
-configurado para que cada commit o creación/cierre de issues se notifique en un grupo de telegram en el que estamos mi tutor y yo
-junto con dicho Bot.
+configurado para que cada commit, creación/cierre de issues o comentarios se notifiquen en un grupo de telegram en el que estamos mi tutor y yo
+junto con dicho Bot.\\
+
+\section{Flujo de trabajo}
+
+El flujo de trabajo que he seguido para el desarrollo de proyecto ha sido el siguiente:\\\\
 
 \subsection{Kanban}
 
-Se ha creado un proyecto de GitHub y se ha utilizado una tabla Kanban para gestionar las historias de usuario y las issues del proyecto.
+Se ha creado un proyecto de Github y se ha utilizado un tablero Kanban para gestionar las historias de usuario y las issues del proyecto.\\
 
 El Kanban del proyecto puede verse en el siguiente enlace:
 \url{https://github.com/josemip98/TFG/projects/1}
@@ -36,12 +43,14 @@ El Kanban del proyecto puede verse en el siguiente enlace:
 	\end{figure}
 
 \subsection{Historia de usuario}
-Una historia de usuario es \textbf{una funcionalidad que el usuario espera}.
-El modelo a seguir para la creación de historias de usuario es:
 
-\textit{Como usuario/desarrollador quiero poder [funcionalidad] para [razón dicha funcionalidad].}
-
+Después se han creado todas las historias de usuario.
+Se pueden encontrar todas las historias de usuario creadas en el anexo \ref{anexo} o en el repositorio de Github\cite{user-stories}.\\\\
+Una historia de usuario es \textbf{una funcionalidad que el usuario o desarrollador espera}.
 Además podemos añadir tareas que necesitamos cumplir para completar la historia de usuario o detalles técnicos.
+El modelo a seguir para la creación de historias de usuario es:
+ 
+\textit{Como usuario/desarrollador quiero poder [funcionalidad] para [razón dicha funcionalidad].}
 
 \begin{figure}[H]
 	\centering
@@ -51,7 +60,11 @@ Además podemos añadir tareas que necesitamos cumplir para completar la histori
   	\end{figure}
 
 \subsection{Issues}
-Las issues pueden ser correción de bugs, tareas que sean necesarias para el desarrollo o mantenimiento del proyecto.
+
+Una vez creadas las historias de usuario las he dividido en tareas más pequeñas llamadas issues, 
+además de añadir otras tareas que me hayan sido necesarias tanto para el desarrollo, como para el mantenimiento, 
+documentación o correción de bugs.\\
+Se pueden encontrar todas las issues creadas en el repositorio de Github\cite{issues}.
 
 \begin{figure}[H]
 	\centering
@@ -60,9 +73,11 @@ Las issues pueden ser correción de bugs, tareas que sean necesarias para el des
 	\caption{Ejemplo de issue.}
   	\end{figure}
 
+
+\newpage
 \subsection{Etiquetas}
 
-Las etiquetas son la forma de categorizar las issues pendientes ya sea asignandoles prioridad o describiendo si es una issue de documentación, si es un bug, historia de usuario...
+Por último mencionar que se han utilizado las etiquetas como forma de categorizar las issues pendientes ya sea asignandoles prioridad o describiendo si es una issue de documentación, si es un bug, historia de usuario...
 Además podemos crear etiquetas a nuestro gusto según las necesidades que tengamos.
 
 \begin{figure}[H]
