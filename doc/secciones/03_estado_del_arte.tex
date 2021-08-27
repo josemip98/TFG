@@ -1,34 +1,40 @@
 \chapter{Estado del arte}
 
-Primero de todo necesitaba tener una base de datos de productos alimenticios de la que partir. Para ello estuve buscando datasets de código abierto y encontré una web muy interesante.
-https://es.openfoodfacts.org/
-\\\\
-\textbf{Open food facts:} es una gran base de datos de productos alimenticios de código abierto que nos permite consultar de cualquier producto su información nutricional.
-Relacionado con el proyecto me fué de gran ayuda ya que me permitió descargar sus datos en distintos formatos para su posterior limpieza e importación.
-\\\\
-Una vez hecho esto, investigué sobre otras aplicaciones que estuvieran relacionadas con la creación de dietas. Encontré \textbf{Intake24} y \textbf{Eatthismuch}. 
+Después de investigar sobre otras aplicaciones que estuvieran relacionadas con la creación de dietas. Encontré \textbf{Intake24}\cite{Intake24} y \textbf{Eatthismuch}\cite{Eatthismuch}. 
 \\\\
 \textbf{Intake24:} es un web de código abierto que genera dietas basandose en la alimentación que has tenido en las 24 horas pasadas.
+La web te pide tus datos personales y después te va preguntando sobre las comidas del día anterior y sobre tus gustos personales.
+Su uso es gratis para todos ya que fue un proyecto de investigación de la Universidad de Cambridge junto con la Universidad de Newcastle y 
+la FSS (Food Standards Scotland).
 \\\\
 \textbf{Inconveniente:}
-Me pareció interesante pero no se ajusta a lo que quería desarrollar en este proyecto ya que consultando gente relacionadas
+Esta web es bastante interesante, pero no se ajusta a lo que quería desarrollar en este proyecto, ya que consultando gente relacionadas
 con el mundo de la nutrición me comentaron que para crear una dieta tienes que tener muchas cosas más en cuenta y no sólo
-la alimentación que has tenido en el día anterior ya que para dos personas, esa misma alimentación puede afectar de distinas maneras.
+la alimentación que has tenido en el día anterior, ya que para dos personas, esa misma alimentación puede afectar de distinas maneras,
+ya sea entre otras cosas por su metabolismo o por su actividad fisica semanal.
 \\\\
-Enlace a la web: https://intake24.co.uk/info/open-source
+Por otro lado, he encontrado la web de \textbf{Eatthismuch}:
 \\\\
-Por otro lado, encontré \textbf{Eatthismuch}:
-\\\\
-\textbf{Eatthismuch} genera dietas personalizadas basadas en las comidas que quieras hacer al día y la ingesta de calorías que quieras.
+\textbf{Eatthismuch} genera dietas personalizadas basadas en el número de comidas que quieras hacer al día y la ingesta de calorías que quieras.
+Esta aplicación sobretodo esta pensada para dietistas ya que les va a facilitar llevar el seguimiento de sus clientes creando planes específicos
+para cada cliente, además de permitir mandar correos electrónicos y PDF con la marca de su empresa.
+Es gratis los primeros 15 días, después tiene un precio de 79 dólares (66,99 euros) al mes si lo compras durante 3 meses o de 99 dólares ( 83,95 euros) si lo contratas mensualmente.
+Incluye 10 cuentas de clientes, si quisieramos más se paga 4 dólares (3.39 euros) más por cada uno adicional.\\
+Si no eres dietista y simplemente quieres obtener tu dieta también puedes, escoges tu tipo dieta (mediterránea, vegana, vegetariano...), el número de comidas que realizas al día y las calorias que quieres consumir y listo.
+Además da la posibilidad de hacer la lista de la compra y organizar tu dieta con un calendario.
 \\\\
 \textbf{Inconveniente:}
-Es otro punto de vista pero volvemos al mismo problema. Tu puedes ingerir por ejemplo 3000 calorías en las que gran parte sean proteinas
-y muy pocas de grasa y vas a tener un resultado diferente a si de esas 3000 calorías la mayor parte son grasas.
+Esta aplicación es muy interesante en todos los aspectos y se asemeja mucho al proyecto que quiero realizar. Los clientes van a ser los mismos, dietistas que quieran llevar la dieta de sus clientes
+y usuarios con menos conocimientos dietéticos que quieran obtener una dieta. Además de todas las ventajas de tener un calendario para organizarte, planes personalizados, capacidad de exportar dietas a PDF y mucho más.
+Sin embargo, a la hora de generar dietas volvemos al mismo problema que con la otra aplicación. Con sólo la información del número de comidas diarias y la cantidad de calorias a ingerir
+no se consigue una dieta óptima ya que tú puedes ingerir, por ejemplo, 3000 calorías en las que gran parte sean proteinas y muy pocas de grasa y vas a tener un resultado diferente a si de 
+esas 3000 calorías la mayor parte son grasas, añadiendo los problemas anteriormente mencionados de personas con diferentes metabolismos, diferente actividad física semanal, sexo, etc.
+\\\\ 
+Además de estas dos aplicaciones relacionadas con la generación de dietas quiero mencionar otra web que aunque no está relacionado con esto es muy interesante y me va a ser muy útil.
+Para la realización del proyecto primero de todo necesitaba tener una base de datos de productos alimenticios de la que partir. Para ello estuve buscando datasets de código abierto y encontré la web de \textbf{Open Food Facts}\cite{OpenFoodFacts}.
 \\\\
-Este sería el enlace a la web: https://www.eatthismuch.com/
-\\\\
-Tras este análisis de aplicaciones similares a nuestro objetivo me decidí por crear una base de datos de productos en la que puedas consultar
-la información nutricional de cada uno, con la opción tanto de crear tu propia de dieta si tienes conocimiento nutricional y asignarsela a un usuario o de solicitar que 
-se te genere una dieta en base a tus características y objetivos. Una vez esto podrias consultar la dieta y intercambiar productos que sean similares 
-nutricionalmente hablando.
+\textbf{Open food facts:} es una gran base de datos de productos alimenticios de código abierto que nos permite consultar de cualquier producto su información nutricional.
+Esta base de datos es gratis y es un proyecto a nivel mundial en el que colaboran muchas personas y nosotros mismos podemos ayudar incluyendo productos.
+Relacionado con el proyecto me va a ser de gran ayuda ya que me va a permitir descargar sus datos en distintos formatos para su posterior limpieza e importación.
+
 
