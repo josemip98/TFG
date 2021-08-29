@@ -27,31 +27,33 @@ def lista_productos(request):
     if request.user.is_authenticated:
         user_activo = request.user.usuario
         paginator = Paginator(productos, 25) # Show 25 contacts per page.
-
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'lista_productos.html', {'page_obj': page_obj,'productos': productos, 'login': user_activo})
 
     else:
         paginator = Paginator(productos, 25) # Show 25 contacts per page.
-
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'lista_productos.html', {'page_obj': page_obj,'productos': productos})
 
-def productos_detalle(request, pk):
+def buscar_productos_similares(producto):
+    querys = (Q(proteinas__icontains=producto.proteinas) | Q(grasa__icontains=producto.grasa) & ~Q(nombre__icontains=producto.nombre))
+    productos = Producto.objects.get_queryset().order_by('calorias').filter(querys)
+    return productos
 
+def productos_detalle(request, pk):
     try:
-        id_producto=Producto.objects.get(pk=pk)
+        producto=Producto.objects.get(pk=pk)
     except Producto.DoesNotExist:
         raise ("Producto no existe")
-
     if request.user.is_authenticated:
         user_activo = request.user.usuario
-
-        return render(request,'productos_detalle.html',context={'producto':id_producto, 'login': user_activo})
+    if(producto.calorias != None and producto.grasa != None):
+        productos = buscar_productos_similares(producto)  
+        return render(request,'productos_detalle.html',context={'producto':producto, 'login': user_activo, 'productos': productos})
     else:
-        return render(request,'productos_detalle.html',context={'producto':id_producto,})
+        return render(request,'productos_detalle.html',context={'producto':producto,})
 
 def contacto(request):
     form = ContactoForm()
@@ -66,14 +68,11 @@ def aniadir_producto(request):
     user_activo = request.user.usuario
     if request.method == 'POST':
         form = ProductoForm(request.POST)
-
         if form.is_valid():
             form.save()
             return redirect('/lista_productos/')
-
     else:
         form = ProductoForm()
-
     return render(request, 'añadir_producto.html', {'form': form, 'login': user_activo})
 
 
@@ -89,7 +88,6 @@ def login(request):
         else:
             form = LoginForm(request.POST)
             return render(request,"login.html",context={"form":form})
-
     else:
         form = LoginForm(request.POST)
         return render(request,"login.html",context={"form":form})
@@ -98,7 +96,6 @@ def login(request):
 def registro(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST,request.FILES)
-
         if form.is_valid():
             username = request.POST['usuario']
             password = request.POST['password']
@@ -111,10 +108,12 @@ def registro(request):
             usuario.save()
             do_login(request, usuario)
             return render(request, 'base.html', {'usuario': usuario})
+        else:
+            form = UsuarioForm()
+            return render(request, 'registro.html', {'form': form})
     else:
         form = UsuarioForm()
-
-    return render(request, 'registro.html', {'form': form})
+        return render(request, 'registro.html', {'form': form})
 
 
 @login_required
@@ -123,23 +122,14 @@ def logout_view(request):
     return HttpResponseRedirect(settings.LOGOUT_REDIRECT_URL)
 
 def buscar_producto(request):
-
     producto = request.GET.get('producto', '')
-
-    print(producto)
-
     querys = Q(nombre__icontains=producto)
-
     productos = Producto.objects.get_queryset().order_by('nombre').filter(querys)
-
     paginator = Paginator(productos, 100)
-
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     if request.user.is_authenticated:
         user_activo = request.user.usuario
-        print(productos)
         return render(request,'lista_productos.html',{'productos':productos, 'page_obj': page_obj, 'login': user_activo})
     else:
         return render(request,'lista_productos.html',{'productos':productos, 'page_obj': page_obj,})
@@ -155,7 +145,6 @@ def modificar_producto(request, id_producto):
         alergenos = request.POST['alergenos']
         aditivos = request.POST['aditivos']
         puntuacion_nova = request.POST['puntuacion_nova']
-        image_url = request.POST['imagen']
         calorias = request.POST['calorias']
         energia = request.POST['energia']
         grasa = request.POST['grasa']
@@ -171,7 +160,7 @@ def modificar_producto(request, id_producto):
         hierro = request.POST['hierro']
         puntuacion = request.POST['puntuacion']
         Producto.objects.filter(id=id_producto).update(nombre=nombre, marca=marca, tienda=tienda, pais=pais, alergenos=alergenos, 
-        aditivos=aditivos, puntuacion_nova=puntuacion_nova, image_url=image_url, calorias=Decimal(calorias), energia=Decimal(energia), grasa=Decimal(grasa),
+        aditivos=aditivos, puntuacion_nova=puntuacion_nova, calorias=Decimal(calorias), energia=Decimal(energia), grasa=Decimal(grasa),
         grasas_saturadas=Decimal(grasas_saturadas), colesterol=Decimal(colesterol), carbohidratos=Decimal(carbohidratos), azucares=Decimal(azucares), fibra=Decimal(fibra),
         proteinas=Decimal(proteinas), sal=Decimal(sal), sodio=Decimal(sodio), calcio=Decimal(calcio), hierro=Decimal(hierro), puntuacion=puntuacion)
         return redirect('lista_productos')
@@ -256,13 +245,31 @@ def ver_dieta(request, id_dieta):
 def generar_dieta(request):
     user_activo = request.user.usuario
     if request.method == 'POST' and 'crear_dieta' in request.POST:
-        items = list(Producto.objects.all())
-        random_items = random.sample(items, 10)
-        dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
-        dieta.save()
-        for p in random_items:
-            producto = Producto.objects.get(id=p.id)
-            dieta.productos.add(producto.id)
+        objetivo = request.POST['objetivo']
+        if(objetivo=="1"):
+            dieta = Dieta.objects.create(nombre="Volumen",descripcion="Dieta para ganar volumen", usuario=request.user)
+            dieta.save()
+            items = list(Producto.objects.all())
+            random_items = random.sample(items, 10)
+            for p in random_items:
+                producto = Producto.objects.get(id=p.id)
+                dieta.productos.add(producto.id)
+        elif(objetivo=="2"):
+            dieta = Dieta.objects.create(nombre="Perder peso",descripcion="Dieta para perder peso", usuario=request.user)
+            dieta.save()
+            items = list(Producto.objects.all())
+            random_items = random.sample(items, 10)
+            for p in range(10):
+                producto = Producto.objects.get(id=p.id)
+                dieta.productos.add(producto.id)
+        else:
+            items = list(Producto.objects.all())
+            random_items = random.sample(items, 10)
+            dieta = Dieta.objects.create(nombre="Dieta aleatoria",descripcion="Aleatoria", usuario=request.user)
+            dieta.save()
+            for p in random_items:
+                producto = Producto.objects.get(id=p.id)
+                dieta.productos.add(producto.id)
         return redirect('/mostrar_dieta/')
     else:
         return render(request,'generar_dieta.html', {'login': user_activo})
