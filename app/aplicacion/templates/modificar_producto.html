@@ -38,10 +38,6 @@
           </div>
           <div class="row">
             <div class="col">
-              <label for="imagen" class="col-form-label">Imagen URL </label> 
-              <input id="imagen" name="imagen" placeholder="Imagen URL" class="form-control here" type="text" value="{{ producto.image_url }}">
-            </div>
-            <div class="col">
               <label for="calorias" class="col-form-label">Calorías (g) </label> 
               {% if producto.calorias %}
               <input id="calorias" name="calorias" placeholder="Calorías" class="form-control here" required="required" type="number" step=".1" value="{{ producto.calorias|floatformat:0 }}">
