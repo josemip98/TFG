@@ -1,14 +1,10 @@
 \chapter{Implementación}
 
-%Modelo de base de datos, junto con consultas para limpieza de datos e importacion
-%Librerias utilizadas
-%Funciones especiales
-
 \section{Tecnologías empleadas}
 
 \subsection{Lenguaje de programación}
 
-Para este proyecto necesitaba un lenguaje que fuera multipropósito ya que el objetivo es realizar una web pero también en un futuro entrar en el mundo del Big Data para la creación de dietas en base a estudios de gran cantidad de productos.
+Para este proyecto necesito un lenguaje que fuera multipropósito ya que el objetivo es realizar una web pero también en un futuro entrar en el mundo del Big Data para la creación de dietas en base a estudios de gran cantidad de productos.
 Ante esta necesidad, la mejor opción es \textbf{Python}.\\\\
 \textbf{Python} es un lenguaje que quizá para el desarrollo web no sea la principal opción frente a otras opciones como \textbf{PHP} o \textbf{Javascript}, pero cumple 
 la necesidad de ser multipropósito, es mas entendible y simple además de tener una curva de aprendizaje baja frente a otros lenguajes tan estrictos como \textbf{C}, 
@@ -29,39 +25,137 @@ Una vez determinadas nuestras necesidades, vamos a explicar que nos pueden aport
 \\
 Por una lado, tenemos \textbf{Flask} que es simple y pequeño ya que consiste en una serie de módulos, sin embargo, proporciona grandes funcionalidades.
 Se integra con otras herramientas como pudiera ser SQLAlchemy para cumplir con herramientas que trabajen SQL para la base de datos, es sencillo de utilizar, tiene bastante documentación y se adapta bastante a fácil a cualquier proyecto.
-Sin embargo, no cumple el modelo MVC, cosa que si que hace nuestra otra opción Django.\\
-\\
+Sin embargo, no cumple el modelo MVC, cosa que si que hace nuestra otra opción Django.\\\\
+
 \textbf{Django} es un Framework fullstack por lo que se adapta a cualquier tipo de proyecto, cuenta con gran entorno de librerías (según algunas webs más de 4000) tanto para sistema de autentificación de usuarios, manejo de imágenes, paginador, etc\dots
 Incluye protección frente a ataques dek estilo inyeccion SQL o XSS, gran rendimiento, flexibilidad pero sobre todo que permite un desarrollo ágil y reutilizable siguiendo el modelo MVC.
-Por tanto estaba clara mi elección y me he decantado por \textbf{Django}.
+Por tanto estaba clara mi elección y me he decantado por \textbf{Django}.\\\\
+
+Django utiliza el modelo MVC, aunque en su caso es \textbf{MVT (Modelo-Vista-Template)}.\\
+El \textbf{modelo} maneja las tablas de la base de datos, la validación y las consultas.\\
+Las \textbf{vistas} serían las funciones que enlazan los modelos con los templates y deciden que template se muestra.\\
+Los \textbf{templates} son la información que se muestra.\\ 
+
+La diferencia con otros modelos MVC es la vista, que en este caso las vistas serían el controlador y los templates serían las vistas.
+Por último, voy a explicar el funcionamiento de dicho modelo:
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{MVT.png}}
+  \caption{Modelo-Vista-Template}
+\end{figure}
+
+Cuando hacemos una consulta a la web, esta consulta accede al mapa de URLs, cada ruta está asociada a una vista, 
+esa vista decide si necesita hacer una consulta a la base de datos, y por tanto, irá a los modelos y después se 
+mostrará la información a través de un template o directamente se muestra la información en un template.
 
 \section{Base de datos}
 
 \subsection{Tecnología}
 
-%Explicar postgresql y porque lo he elegido frente a otros gestores de bases de datos
+Para elegir que gestor de base de datos utilizar en el proyecto primero debemos pensar en qué necesidades tenemos.
+Las dos características principales que deben cumplir es que sea escalable y que funcione bien en ambientes de alto volumen 
+de datos ya que la aplicación comenzará a funcionar con un número pequeño de productos alimenticios pero la idea es almacenar una gran cantidad de datos.\\ \\
+Mis opciones eran \textbf{PostgreSQL}, \textbf{SQLite} y \textbf{MySQL}.
+SQLite era una buena opción pero uno de sus problemas es que es dificilmente escalable y no es adecuado para grandes bases de datos.
+En ese aspecto tanto PostgreSQL como MySQL son buenas opciones ya que cumplen esas características.\\ \\
+
+Finalmente me he decidido por \textbf{PostgreSQL} debido a que MySQL es algo más compleja y se necesita cierta experiencia para configurarlo que PostgreSQL.
+
 %Explicar procedimientos almacenados postgresql
 \subsection{Configuración}
 
+Una vez creado nuestro proyecto de Django, por defecto nos viene configurado para usar sqlite, pero configurarlo con PostgreSQL va a ser muy sencillo.
+Simplemente tenemos que instalar la librería \textbf{psycopg2} y en el archivo settings crear una base de datos que tenga el motor de postgresql en lugar de sqlite3.
+Además debemos indicarle un nombre, host, credenciales de usuario y contraseña y puerto (normalmente 5432).\\ \\
+
+Una vez hecho esto debemos crear nuestros modelos de la base de datos.
+
 \subsection{Modelos}
-%\subsubsection{Usuario}
-%\subsubsection{Producto}
-%\subsubsection{Dieta}
+
+He creado los modelos producto, dieta y usuario.\\
+El modelo producto está formado por 23 datos que guardan información nutricional del producto como nombre, tienda, alergenos, proteinas...
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{productoModel.png}}
+  \caption{Modelo producto}
+\end{figure}
+
+El modelo dieta está formado por un nombre, una descripción, una lista de productos y un usuario al que se le asigna.
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{dietaModel.png}}
+  \caption{Modelo dieta}
+\end{figure}
+
+Para el modelo del usuario he utilizado la libreria \textbf{django.contrib.auth.models} de Django, 
+esta librería nos da toda la funcionalidad necesaria para crear usuarios, iniciar sesión y cerrarla. 
+El problema es que sólo tiene los atributos username, password, email, nombre y apellidos.\\\\
+
+Para solucionar esto he utilizado otra librería llamada \textbf{Base Abstract user} que te permite a partir 
+de la librería anterior crear un modelo de usuario modificado con los atributos que nosotros queramos.\\
+
+Para ello creamos el siguiente modelo de usuario, en el que tenemos atributos como peso, altura, edad, sexo y fecha de nacimiento.
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{usuarioModel.png}}
+  \caption{Modelo usuario}
+\end{figure}
+
+Una vez tenemos el modelo de usuario simplemente en el settings indicamos dicho modelo y creamos las funciones 
+para crear usuarios y super usuarios.\\
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{usuarioManager.png}}
+  \caption{Modelo usuario manager}
+\end{figure}
 
 \subsection{Formularios}
-%\subsubsection{Usuario}
-%\subsubsection{Producto}
-%subsubsection{Dieta}
+
+Otra parte importante serán los formularios, con estos podremos crear y modificar los modelos creados anteriormente.
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{usuarioForm.png}}
+  \caption{Formulario de usuario}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{registroLoginForm.png}}
+  \caption{Formularios de registro y login}
+\end{figure}
 
 \subsection{Limpieza de datos}
 
-\subsection{Importación de datos}
+%Dataset de Open Food Facts
+%Sentencias SQL para limpieza de datos
 
 \section{Frontend}
 
-%Explciar                                                                                           Bootstrap
-%Plantilla bootstrap adminlte
-%Iconos fontawesome
+%Explicar porque aplicacion web
+
+%Para el frontend usare bootstrap ya que...
+
+\textbf{Bootstrap}
+
+%Con una plantilla llamada adminlte.....
+
+\textbf{AdminLTE} \cite{adminlte}
+
+Para los iconos he utilizado la web open source \textbf{FontAwesome} \cite{iconos} que nos 
+ofrece una gran cantidad de iconos gratis además de dar la capacidad de elegir el tamaño de ellos.
 
 \section{Operaciones}
 
@@ -71,70 +165,7 @@ Por tanto estaba clara mi elección y me he decantado por \textbf{Django}.
 \begin{figure}[H]
   \centering
   \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{admin.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{admin.py.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{añadirProducto.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{consultarPerfil.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{consultarProducto.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{crearDieta.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{dietaModel.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{generarDieta.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
     \includegraphics[scale=0.4]{index.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{listadoProductos.png}}
   \caption{}
 \end{figure}
 
@@ -148,7 +179,49 @@ Por tanto estaba clara mi elección y me he decantado por \textbf{Django}.
 \begin{figure}[H]
   \centering
   \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{modal.png}}
+    \includegraphics[scale=0.4]{registro.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{listadoProductos.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{añadirProducto.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{consultarProducto.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{consultarPerfil.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{crearDieta.png}}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{generarDieta.png}}
   \caption{}
 \end{figure}
 
@@ -162,64 +235,27 @@ Por tanto estaba clara mi elección y me he decantado por \textbf{Django}.
 \begin{figure}[H]
   \centering
   \noindent\makebox[\textwidth]{
+    \includegraphics[scale=0.4]{modal.png}}
+  \caption{Ejemplo de modal}
+\end{figure}
+
+from django.core.paginator 
+
+\begin{figure}[H]
+  \centering
+  \noindent\makebox[\textwidth]{
     \includegraphics[scale=0.4]{paginador.png}}
-  \caption{}
+  \caption{Paginador}
 \end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{productoModel.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{registro.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{registroLoginForm.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{sesionIniciada.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{usuarioForm.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{usuarioManager.png}}
-  \caption{}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.4]{usuarioModel.png}}
-  \caption{}
-\end{figure}
-
 
 \section{Tests}
 
 %Librería test - unittest
 %Ejemplo
+
+Para los tests emplearé la biblioteca TestCase. es la más común en Django para la creación de test.
+Esta biblioteca es una extensión de SimpleTestCase pero esta sólo vale si no utilizas una base de datos 
+en tu aplicación.
 
 \section{Despliegue}
 
@@ -263,7 +299,7 @@ Importamos las librerias, ponemos debug a false e incluimos en allowed\_hosts la
   \centering
   \noindent\makebox[\textwidth]{
     \includegraphics[scale=1]{settings1.png}}
-  \caption{Archivo settings.py}
+  \caption{Configuración despliegue}
 \end{figure}
 
 Añadimos el middleware de whitenoise.
@@ -272,7 +308,7 @@ Añadimos el middleware de whitenoise.
   \centering
   \noindent\makebox[\textwidth]{
     \includegraphics[scale=1]{settings2.png}}
-  \caption{Archivo settings.py}
+  \caption{Configuración despliegue middleware}
 \end{figure}
 
 Indicamos la base de datos.
@@ -281,7 +317,7 @@ Indicamos la base de datos.
   \centering
   \noindent\makebox[\textwidth]{
     \includegraphics[scale=1]{settings3.png}}
-  \caption{Archivo settings.py}
+  \caption{Configuración despliegue base de datos}
 \end{figure}
 
 Añadimos esta línea para que whitenoise cargue los archivos estáticos.
@@ -290,7 +326,7 @@ Añadimos esta línea para que whitenoise cargue los archivos estáticos.
   \centering
   \noindent\makebox[\textwidth]{
     \includegraphics[scale=1]{settings4.png}}
-  \caption{Archivo settings.py}
+  \caption{Configuración despliegue archivos estáticos}
 \end{figure}
 
 Ya tendriamos configurado todo. Simplemente tenemos que esperar a que se haga el despliegue si hemos configurado que se haga automaticamente con cada commit o desplegarlo nosotros desde la web.\\\\
