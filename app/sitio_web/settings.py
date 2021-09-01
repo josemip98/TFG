@@ -82,9 +82,7 @@ WSGI_APPLICATION = 'sitio_web.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('ec2-44-195-209-130.compute-1.amazonaws.com')
-    )
+    'default': dj_database_url.config()
 }
 
 # Password validation
