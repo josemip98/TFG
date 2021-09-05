@@ -44,7 +44,7 @@ El Kanban del proyecto puede verse en el siguiente enlace:
 
 \subsection{Historia de usuario}
 
-Después se han creado todas las historias de usuario.
+Después se han creado todas las historias de usuario. Estas contienen los \textbf{requisitos funcionales}.
 Se pueden encontrar todas las historias de usuario creadas en el apéndice \ref*{apendiceA} o en el repositorio de Github\cite{user-stories}.\\\\
 Una historia de usuario es \textbf{una funcionalidad que el usuario o desarrollador espera}.
 Además, podemos añadir tareas que necesitamos cumplir para completar la historia de usuario o detalles técnicos.
@@ -59,6 +59,8 @@ El modelo a seguir para la creación de historias de usuario es:
 	\caption{Ejemplo historia de usuario.}
   	\end{figure}
 
+Una vez creadas las historias de usuario se crean varios estados en el kanban, en mi caso, he creado los estados por hacer, en progreso y hecho, y se colocan según el estado en el que se encuentren.
+
 \subsection{Issues}
 
 Una vez creadas las historias de usuario las he dividido en tareas más pequeñas llamadas issues, 
@@ -69,18 +71,49 @@ Se pueden encontrar todas las issues creadas en el repositorio de Github\cite{is
 \begin{figure}[H]
 	\centering
 	\noindent\makebox[\textwidth]{
-	\includegraphics[scale=0.4]{issue.png}}
+	\includegraphics[scale=0.5]{issue.png}}
 	\caption{Ejemplo de issue.}
   	\end{figure}
+
+Una vez credas las issues, hacemos lo mismo que con las historias de usuario, las colocamos en el kanban según el estado en el que se encuentren.
 
 \subsubsection{Etiquetas}
 
 Por último, mencionar que se han utilizado las etiquetas como forma de categorizar las issues pendientes ya sea asignándoles prioridad o describiendo si es una issue de documentación, si es un bug, historia de usuario...
-Además, podemos crear etiquetas a nuestro gusto según las necesidades que tengamos.
+Además, podemos crear etiquetas a nuestro gusto según las necesidades que tengamos.\\ \\
 
 \begin{figure}[H]
 	\centering
 	\noindent\makebox[\textwidth]{
-	\includegraphics[scale=0.4]{etiquetas.png}}
+	\includegraphics[scale=0.7]{etiquetas.png}}
 	\caption{Ejemplo de etiquetas.}
 	\end{figure}
+
+Este proyecto al ser software libre permite a usuarios crear nuevas issues, por lo que estas etiquetas nos serán muy útiles para clasificarlas y asignarles prioridad.
+
+\subsection{Commit}
+
+Para terminar con el flujo de trabajo, mencionar que con cada commit referenciamos a la issue que estamos en proceso de completar con \textbf{\#numero\_issue} y si
+hemos terminado la issue la cerramos con \textbf{close \#numero\_issue}.
+
+Este sería un ejemplo en el que cerramos un issue:
+
+\begin{figure}[H]
+	\centering
+	\noindent\makebox[\textwidth]{
+	\includegraphics[scale=0.7]{commit.png}}
+	\caption{Ejemplo de commit.}
+	\end{figure}
+
+Esto es muy importante ya que, si nos vamos a cada issue nos aparecen todos los commits que hemos hecho relacionados con él y si tuvieramos algún problema podriamos 
+encontrar el error mucho más fácil, sería una manera de categorizar los cambios que hacemos en el proyecto.
+
+\subsection{Requisitos no funcionales}
+
+Los requisitos no funcionales del proyecto son los siguientes:
+
+\begin{enumerate}
+	\item Que el coste de desarrollo sea mínimo.
+	\item Que el tiempo de desarrollo sea mínimo.
+	\item Que se pueda desplegar fácilmente en un PaaS (Plataforma como servicio).
+  \end{enumerate}
