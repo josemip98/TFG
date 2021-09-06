@@ -179,6 +179,8 @@ Para el paginador de la vista listado de productos he utilizado \textbf{django.c
 un paginador muy fácil simplemente llamamos a la función Paginador pasándole dos parámetros, un listado con los objetos que 
 queramos mostrar y el número en el que queremos dividirlo (productos a mostrar por página). \\ \\
 
+Para la modificación y borrado de objetos, he utilizado modales de Bootstrap con los que aparace un aviso para indicarnos la acción que vamos a hacer y las opciones de confirmar o cancelar y volveriamos a la vista anterior.\\ \\
+
 Para la \href{https://github.com/josemip98/TFG/issues/12}{generación de dietas} en un principio la idea era utilizar un algoritmo de la mochila con el que a partir de un formulario obtuvieramos los datos del solicitante
 como el peso, altura, sexo y objetivos, y en base a eso obtener unas cantidades de proteinas, grasas, etc que tuvieramos que alcanzar.\\ \\
 
@@ -214,6 +216,7 @@ ofrece una gran cantidad de iconos gratis además de dar la capacidad de elegir 
 \subsection{Formularios}
 
 Otra parte importante serán los formularios, con estos podremos crear y modificar los modelos creados anteriormente.
+Desde los formularios indicamos que campos tenemos, cuales son requeridos y cuales no, de qué tipo son, etc...
 
 \begin{figure}[H]
   \centering
