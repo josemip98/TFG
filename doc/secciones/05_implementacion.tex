@@ -20,7 +20,11 @@ Está basado en \textbf{Python}, cuenta con un gran entorno de librerías tanto 
 pero sobre todo que permite un desarrollo ágil y reutilizable siguiendo el modelo MVC.\\ \\
 
 Otros Frameworks como Laravel, Laravel, Spring o Express utilizan tambien el modelo MVC y tienen características similares pero he decidio quedarme con \textbf{Django} porque es el que conozco de 
-haberlo utilizado en el grado de ingeniería informática y me siento más cómodo trabajando con él.\\ \\
+haberlo utilizado en el grado y me siento más cómodo trabajando con él, así cumplimos el requisito no funcional de minimizar el tiempo de desarrollo.\\ \\
+
+Con Django desarrollamos \textbf{aplicaciones monolíticas}, éstas están caracterizadas por agrupar toda la funcionalidad en un sólo código. Como ventajas de las aplicaciones monolíticas 
+podemos mencionar la eficiencia y que al tratarse de un proceso lineal, si aparecen bugs o errores es más fácil encontrarlos. Otro tipo de aplicaciones son las \textbf{aplicaciones de microservicios}, en las que la funcionalidad 
+de la aplicación se divide en pequeños servicios que se implementan y trabajan por separado, esto da como gran ventaja la modularidad.\\ \\
 
 Django utiliza el modelo MVC, aunque en su caso es \textbf{MVT (Modelo-Vista-Template)}.\\
 El \textbf{modelo} maneja las tablas de la base de datos, la validación y las consultas.\\
@@ -90,11 +94,11 @@ grandes conocimientos acerca de la alimentación, y los desarrolladores.\\
 
 Como se muestra en la figura, tenemos en el centro de todo las entidades o modelos. Una vez creados estos modelos, serán los propios usuarios y expertos en el modelo de negocio los que
 mediante historias de usuario van a detallar las distintas funcionalidades que tendra el proyecto. A partir de ahí se crean los controladores (backend) y por último, tenemos el frontend,
-en nuestro caso, una web.\\ \\
+en nuestro caso, una web.\\
 
 Esta manera de diseño hace que las capas más internas no sepan nada acerca de las externas, mientras que las externas se basan en las internas.
 
-He creado los modelos producto, dieta y usuario, los modelos E/R se encuentran en el apéndice \ref*{apendiceB}\\
+He creado los modelos producto, dieta y usuario, los modelos E/R se encuentran en el apéndice C.\\
 El modelo producto está formado por 23 datos que guardan información del producto como nombre, tienda, categoría.. y información nutricional como proteinas, hidratos, grasa...\\\\
 
 \begin{figure}[H]
@@ -115,7 +119,7 @@ El modelo dieta está formado por un nombre, una descripción, una lista de prod
 
 Para el modelo del usuario he utilizado la librería \textbf{django.contrib.auth.models} de Django, 
 esta librería nos da toda la funcionalidad necesaria para crear usuarios, iniciar sesión y cerrarla. 
-El problema es que sólo tiene los atributos username, password, email, nombre y apellidos.\\\\
+El problema es que sólo tiene los atributos username, password, email, nombre y apellidos.\\.
 
 Para solucionar esto he utilizado otra librería llamada \textbf{Base Abstract user} que te permite a partir 
 de la librería anterior crear un modelo de usuario modificado con los atributos que nosotros queramos.\\
@@ -165,17 +169,17 @@ Cuando el proyecto vaya avanzando en el desarrollo se irán incluyendo productos
 
 \section{Backend} \label{sec:backend}
 
-Voy a explicar la funcionalidad de la aplicación, así como las funciones más interesantes y las bibliotecas o paquetes utilizados para ello, podemos consultar el manual de usuario en el apéndice C \ref*{apendiceC}. \\ \\
+Voy a explicar la funcionalidad de la aplicación, así como las funciones más interesantes y las bibliotecas o paquetes utilizados para ello, podemos consultar el manual de usuario en el apéndice. \\ \\
 
-Para el modelo de usuario podemos registrarnos y crear nuestro perfil, a demás de consultarlo, modificarlo y eliminarlo.
-Si iniciamos sesión podemos consultar el lsitado total de productos que hay en la web así como buscar el que queramos, consultarlo en detalle y
-modificarlo y eliminarlo si somos administradores o pertenecemos al grupo de dietistas.\\ \\
+Para el modelo de usuario podemos \href{https://github.com/josemip98/TFG/issues/4}{registrarnos} y crear nuestro perfil, a demás de \href{https://github.com/josemip98/TFG/issues/21}{consultarlo}, \href{https://github.com/josemip98/TFG/issues/11}{modificarlo y eliminarlo}.
+Si iniciamos sesión podemos consultar el \href{https://github.com/josemip98/TFG/issues/2}{listado total de productos} que hay en la web así como buscar el que queramos, \href{https://github.com/josemip98/TFG/issues/3}{consultarlo} en detalle y
+\href{https://github.com/josemip98/TFG/issues/8}{modificarlo} y \href{https://github.com/josemip98/TFG/issues/9}{eliminarlo} si somos administradores o pertenecemos al grupo de dietistas.\\ \\
 
 Para el paginador de la vista listado de productos he utilizado \textbf{django.core.paginator} de Django. Este paquete nos permite crear 
 un paginador muy fácil simplemente llamamos a la función Paginador pasándole dos parámetros, un listado con los objetos que 
 queramos mostrar y el número en el que queremos dividirlo (productos a mostrar por página). \\ \\
 
-Para la generación de dietas en un principio la idea era utilizar un algoritmo de la mochila con el que a partir de un formulario obtuvieramos los datos del solicitante
+Para la \href{https://github.com/josemip98/TFG/issues/12}{generación de dietas} en un principio la idea era utilizar un algoritmo de la mochila con el que a partir de un formulario obtuvieramos los datos del solicitante
 como el peso, altura, sexo y objetivos, y en base a eso obtener unas cantidades de proteinas, grasas, etc que tuvieramos que alcanzar.\\ \\
 
 El algoritmo trabajaría con esos parámetros y generaría una dieta que alcanzara esas cantidades de nutrientes específicos, pero finalmente esa idea fué descartada por dos motivos.\\\\
@@ -187,7 +191,7 @@ las mismas características no obtendrían los mismos resultados. Esto es debido
 
 Ante esto, entre yo y estas personas pensamos que lo mejor era poder solicitar estas dietas pero que en vez de generarlas con un algoritmo de la mochila, estuvieran ya creadas previamente
 y sólo se tendría que elegir una en función de los objetivos y características del usuario. Una vez obtenida la dieta, para optimizarla vamos a desarrollar una función con la que 
-obtengamos productos que sean similares entre sí, nutricionalmente hablando.\\\\
+obtengamos \href{https://github.com/josemip98/TFG/issues/10}{productos que sean similares entre sí}, nutricionalmente hablando.\\\\
 
 Esto haría que nosotros podamos ir probando nuevos productos e incluirlos en nuestras dietas en función de qué nos va mejor o peor, además nos da la opción de encontrar productos más asequibles de precio si así los quisieramos y que se ajustaran más a nuestros gustos.
 
@@ -195,7 +199,7 @@ Esto haría que nosotros podamos ir probando nuevos productos e incluirlos en nu
 
 Para el Frontend del proyecto a desarrollar vamos a realizar una \textbf{aplicación web} ya que para los dietistas les va a ser mucho más cómodo
 crear sus dietas y consultar información que, desde una aplicación móvil, y para los demás usuarios pueden consultarlo desde otros dispositivos, si así lo quisieran, 
-debido a que el diseño va a ser adaptable para todo tipo de dispositivos.
+debido a que el diseño va a ser adaptable para todo tipo de dispositivos.\\ \\
 
 Para ello, voy a utilizar \textbf{Bootstrap} \cite{bootstrap} ya que nos permite diseñar sitios webs de manera sencilla,
 es de código abierto, es compatible con todos los navegadores y sus diseños son adaptables por lo que funcionan en todos los dispositivos,
@@ -236,22 +240,14 @@ Esta biblioteca es una extensión de SimpleTestCase, pero esta sólo vale si no 
 en tu aplicación.\\
 
 Para cada una de las funcionalidades de la web vamos a crear un test y con ella cerraremos la issue corespondiente.
-Este sería un ejemplo en la que testeamos las funciones de crear y modificar un producto.
-
-\begin{figure}[H]
-  \centering
-  \noindent\makebox[\textwidth]{
-    \includegraphics[scale=0.7]{test.png}}
-  \caption{Test}
-\end{figure}
 
 \section{Despliegue} \label{sec:despliegue}
 
+Por último, quedaría desplegar la aplicación, para ello voy a explicar las necesidades del proyecto, que plataforma voy a utilizar, librerías y la configuración necesaria.\\
+
 \subsection{Plataforma}
 
-Por último, quedaría desplegar la aplicación, para ello voy a utilizar \textbf{Heroku}.\\
-
-Ante las necesidades del proyecto de encontrar una plataforma de despliegue en la nube que fuera fácil de usar, pudiera actualizarse de manera automática, fuera gratuita y permitiese el lenguaje Python decidí utilizar Heroku ya que cumplía todas estas necesidades. 
+Ante las necesidades del proyecto de encontrar una plataforma de despliegue en la nube que fuera fácil de usar, pudiera actualizarse de manera automática, fuera gratuita y permitiese el lenguaje Python decidí utilizar \textbf{Heroku} ya que cumplía todas estas necesidades. 
 
 \textbf{Heroku} es una plataforma en la nube que nos permite desplegar aplicaciones web en cualquier lenguaje de programación.
 Además, es muy sencillo, sólo tenemos que conectar nuestro repositorio de GitHub en el que tengamos el proyecto que queremos desplegar,
